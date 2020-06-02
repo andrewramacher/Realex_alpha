@@ -1,6 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 import './App.css';
+import SignIn from './SignIn';
 import mh_logo from './images/moneyhouse_transparent.png'
 import p_logo from './images/Plant_logo_centered.png'
 
@@ -9,10 +10,13 @@ class App extends React.Component {
     super(props);
     this.state = {
       width:  500,
-      height: 500
+      height: 500,
+      signInCLicked: false
     };
 
     this.sendIt = this.sendIt.bind(this);
+    this.learnMore = this.learnMore.bind(this);
+    this.updateSignInClicked = this.updateSignInClicked.bind(this);
   }
 
   handleChange(event) {
@@ -20,9 +24,23 @@ class App extends React.Component {
   }
 
   sendIt(event) {
-    axios.get('http://127.0.0.1:8080/')
-    .then(res=>console.log(res))
+    axios.get('http://127.0.0.1:8080/', {
+      params: {
+      }
+    }).then(res=>console.log(res))
     .catch(err=>console.log(err))
+  }
+
+  learnMore(event) {
+    
+  }
+
+  updateSignInClicked() {
+    let newval = true;
+    if(this.state.signInCLicked) {
+      newval = false;
+    }
+    this.setState({signInCLicked: newval});
   }
 
   updateDimensions() {
@@ -51,15 +69,24 @@ class App extends React.Component {
   }
 
   render() {
+
+    //Handle displaying sign in screen
+    let signInScreen;
+    if(this.state.signInCLicked) {
+      signInScreen = <SignIn onSubmit={this.updateSignInClicked}/>;
+    }
+
     return (
       <div className="App">
         <header className="App-header">
           <button className="small"><img className="small" src={mh_logo} alt="my image" onClick={this.sendIt} /></button>
           <img height={this.state.height} width={this.state.width} src={p_logo} alt="P_logo"/>
-          <button className="signIn">Sign In</button>
-          <button onClick={this.sendIt}>Click Say Hello World</button>
-          <input type="text" value={this.state.value} onChange={this.handleChange} />
+          <button className="signIn" onClick={this.updateSignInClicked}>SIGN IN</button>
+          <div className="want">Passive Income at the Click of a Button</div>
+          <button className="learnMore" onClick={this.learnMore}>LEARN MORE</button>
+
         </header>
+      {signInScreen}
       </div>
     );
   }

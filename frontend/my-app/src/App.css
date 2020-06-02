@@ -43,18 +43,44 @@ button.small {
 button.signIn {
   position: absolute;
   background-color: #030303;
+  font-family: Arial, Helvetica, sans-serif;;
   font-weight: 900;
   font-size: 20px;
+  letter-spacing: 1px;
   right: 75px;
   top: 40px;
   color: #ffd700;
   border: none;
 }
 
+button.learnMore {
+  position: relative;
+  background-color: #ffd700;
+  font-family: Arial, Helvetica, sans-serif;;
+  font-weight: 900;
+  font-size: 20px;
+  letter-spacing: 1px;
+  color: #030303;
+  border: none;
+  margin-top: 10px;
+}
+
 img.small {
   position: relative;
   height: 49px; 
   width: 49px;
+}
+
+.SignIn {
+  position: absolute;
+  right: 50px;
+  top: 70px;
+}
+
+.want {
+  color: #ffd700;
+  font-family: Arial, Helvetica, sans-serif;;
+  font-weight: 500;
 }
 
 @keyframes App-logo-spin {
