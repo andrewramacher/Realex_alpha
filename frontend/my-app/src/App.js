@@ -3,14 +3,14 @@ import axios from 'axios';
 import './App.css';
 import SignIn from './SignIn';
 import mh_logo from './images/moneyhouse_transparent.png'
-import p_logo from './images/Plant_logo_centered.png'
+import p_logo from './images/Elegant.png'
 
 class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      width:  500,
-      height: 500,
+      width:  432,
+      height: 288,
       signInCLicked: false
     };
 
@@ -45,10 +45,10 @@ class App extends React.Component {
 
   updateDimensions() {
     if(window.innerWidth < 500) {
-      this.setState({ width: 250, height: 250 });
+      this.setState({ width: 216, height: 144 });
     } else {
-      let update_width  = Math.floor((500 * window.innerWidth) / 1000);
-      let update_height = Math.floor((500 * window.innerWidth) / 1000);
+      let update_width  = Math.floor((432 * window.innerWidth) / 1000);
+      let update_height = Math.floor((288 * window.innerWidth) / 1000);
       this.setState({ width: update_width, height: update_height });
     }
   }
@@ -80,10 +80,10 @@ class App extends React.Component {
       <div className="App">
         <header className="App-header">
           <button className="small"><img className="small" src={mh_logo} alt="my image" onClick={this.sendIt} /></button>
-          <img height={this.state.height} width={this.state.width} src={p_logo} alt="P_logo"/>
+          <img className="plant" height={this.state.height} width={this.state.width} src={p_logo} alt="P_logo"/>
+          <div className="name">REAL EXPRESS</div>
           <button className="signIn" onClick={this.updateSignInClicked}>SIGN IN</button>
-          <div className="want">Passive Income at the Click of a Button</div>
-          <button className="learnMore" onClick={this.learnMore}>LEARN MORE</button>
+          <div className="want">Rent, Manage, Invest</div>
 
         </header>
       {signInScreen}

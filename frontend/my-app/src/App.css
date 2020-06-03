@@ -2,19 +2,8 @@
   text-align: center;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
 .App-header {
-  background-color: #030303;
+  background-color: #010101;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -24,13 +13,10 @@
   color: white;
 }
 
-.App-link {
-  color: #61dafb;
-}
 
 button.small {
   position: absolute;
-  background-color: #030303;
+  background-color: #010101;
   background-size: contain;
   outline: 0;
   left: 50px;
@@ -42,10 +28,10 @@ button.small {
 
 button.signIn {
   position: absolute;
-  background-color: #030303;
-  font-family: Arial, Helvetica, sans-serif;;
-  font-weight: 900;
-  font-size: 20px;
+  background-color: #010101;
+  font-family: copperplate;
+  font-weight: 400;
+  font-size: 25px;
   letter-spacing: 1px;
   right: 75px;
   top: 40px;
@@ -53,23 +39,13 @@ button.signIn {
   border: none;
 }
 
-button.learnMore {
-  position: relative;
-  background-color: #ffd700;
-  font-family: Arial, Helvetica, sans-serif;;
-  font-weight: 900;
-  font-size: 20px;
-  letter-spacing: 1px;
-  color: #030303;
-  border: none;
-  margin-top: 10px;
-}
 
 img.small {
   position: relative;
   height: 49px; 
   width: 49px;
 }
+
 
 .SignIn {
   position: absolute;
@@ -78,16 +54,16 @@ img.small {
 }
 
 .want {
-  color: #ffd700;
-  font-family: Arial, Helvetica, sans-serif;;
-  font-weight: 500;
+  font-family: copperplate;
+  letter-spacing: 1px;
+  font-weight: 900;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.name {
+  color: #ffd700;
+  font-family: copperplate;
+  font-weight: 400;
+  font-size: 40px;
+  letter-spacing: 1px;
 }
+
