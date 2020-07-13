@@ -1,0 +1,10 @@
+button.signOut {
+    position: relative;
+    display: block;
+    font-family: copperplate;
+    margin-top: 10px;
+    left: 35px;
+    font-weight: 900;
+    background-color: #ffd700;
+    border: none;
+}

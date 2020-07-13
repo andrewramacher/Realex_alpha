@@ -16,16 +16,7 @@ class SignIn extends React.Component {
     }
 
     submit() {
-      this.props.onSubmit();
-      // axios.get('http://127.0.0.1:8080/', {
-      //   params: {
-      //     type: "signIn",
-      //     username: this.state.username,
-      //     password: this.state.password
-      //   }
-      // }).then(res=>console.log(res))
-      // .catch(err=>console.log(err))
-      //this.setState({username: "", password: ""});
+      this.props.onSubmit(this.state.username, this.state.password);
     }
 
     handleChangeUsername(event) {
