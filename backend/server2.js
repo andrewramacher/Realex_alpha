@@ -21,7 +21,7 @@ var store = new MongoDBStore({
 
 //Change for security
 var corsOptions = {
-    origin: 'http://127.0.0.1:3000',
+    origin: 'https://www.realexinvest.com',
     credentials: true
 }
 app.use(cors(corsOptions))
