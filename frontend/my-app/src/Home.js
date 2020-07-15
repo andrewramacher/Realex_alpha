@@ -43,7 +43,7 @@ class Home extends React.Component {
     }
 
     checkLoginStatus() {
-        axios.get("https://54.71.38.110:8443/login", { withCredentials: true })
+        axios.get("https://www.realexinvest.com:8443/login", { withCredentials: true })
         .then(response => {
             if (
               response.data.logged_in &&
@@ -75,7 +75,7 @@ class Home extends React.Component {
           username: username,
           password: password
         });
-        axios.post('https://54.71.38.110:8443/login', data, {
+        axios.post('https://www.realexinvest.com:8443/login', data, {
           headers: {
             'Content-Type': 'application/json',
           },
