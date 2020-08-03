@@ -1,0 +1,36 @@
+.popUp{
+    position: fixed;
+    font-size: 14px;
+    font-family: copperplate;
+    text-align: center;
+    height: 75px;
+    width: 200px;
+    top: 300px;
+    left: 550px;
+    background-color: #010101;
+    border-style: solid;
+    border-color: #ffd700;
+    border-width: 1px;
+}
+
+.popUpText{
+    margin-top: 10px;
+}
+
+button.yesPopUpButton{
+    position: absolute;
+    bottom: 5px;
+    left: 65px;
+}
+
+button.noPopUpButton{
+    position: absolute;
+    bottom: 5px;
+    right: 65px;
+}
+
+button.okPopUpButton{
+    position: absolute;
+    bottom: 5px;
+    right: 85px;
+}

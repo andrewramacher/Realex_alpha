@@ -1,0 +1,56 @@
+img.search{
+    position: absolute;
+    display: block;
+    top: 140px;
+    left: 45px;
+    width: 20px;
+    height: 20px;
+}
+
+input.search {
+    position: absolute;
+    display: block;
+    font-size: 12px;
+    top: 140px;
+    left: 70px;
+    width: 140px;
+    height: 14px;
+}
+
+.sortBy {
+    position: absolute;
+    display: block;
+    font-family: copperplate;
+    font-size: 18px;
+    color: #ffd700;
+    top: 140px;
+    left: 280px;
+}
+
+.dropdown {
+    position: absolute;
+    display: block;
+    top: 140px;
+    left: 370px;
+}
+
+.propertiesList{
+    position: absolute;
+    display: block;
+    font-size: 12px;
+    top: 210px;
+    left: 70px;
+    height: 475px;
+    overflow-y:auto;
+}
+
+.propertiesList:hover{
+    border: 2px solid #ffd700;
+}
+
+.propertyView{
+    position: absolute;
+    background-color: #010101;
+    height: 400px;
+    width: 400px;
+}

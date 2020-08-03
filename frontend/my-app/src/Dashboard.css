@@ -1,10 +1,126 @@
-button.signOut {
-    position: relative;
+.Dashboard {
+    background-color: #010101;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: calc(10px + 2vmin);
+    color: white;
+}
+
+.button:hover {
+    box-shadow: 0 -3 px #ffd700;
+}
+
+
+button.browse {
+    position: absolute;
     display: block;
     font-family: copperplate;
+    font-size: 18px;
     margin-top: 10px;
+    top: 35px;
+    left: 35px;
+    font-weight: 900;
+    color: #ffd700;
+    background-color: #010101;
+    border: none;
+}
+
+button.browse:hover {
+    border: 1px solid #ffd700;
+}
+
+button.browseClicked {
+    position: absolute;
+    display: block;
+    font-family: copperplate;
+    font-size: 18px;
+    margin-top: 10px;
+    top: 35px;
     left: 35px;
     font-weight: 900;
     background-color: #ffd700;
     border: none;
+}
+
+button.chat {
+    position: absolute;
+    display: block;
+    font-family: copperplate;
+    font-size: 18px;
+    margin-top: 10px;
+    top: 35px;
+    left: 160px;
+    font-weight: 900;
+    color: #ffd700;
+    background-color: #010101;
+    border: none;
+}
+
+button.chat:hover {
+    border: 1px solid #ffd700;
+}
+
+button.chatClicked {
+    position: absolute;
+    display: block;
+    font-family: copperplate;
+    font-size: 18px;
+    margin-top: 10px;
+    top: 35px;
+    left: 160px;
+    font-weight: 900;
+    background-color: #ffd700;
+    border: none;
+}
+
+button.properties {
+    position: absolute;
+    display: block;
+    font-family: copperplate;
+    font-size: 18px;
+    margin-top: 10px;
+    top: 35px;
+    left: 285px;
+    font-weight: 900;
+    color: #ffd700;
+    background-color: #010101;
+    border: none;
+}
+
+button.properties:hover {
+    border: 1px solid #ffd700;
+}
+
+button.propertiesClicked {
+    position: absolute;
+    display: block;
+    font-family: copperplate;
+    font-size: 18px;
+    margin-top: 10px;
+    top: 35px;
+    left: 285px;
+    font-weight: 900;
+    background-color: #ffd700;
+    border: none;
+}
+
+button.signOut {
+    position: absolute;
+    display: block;
+    font-family: copperplate;
+    font-size: 18px;
+    margin-top: 10px;
+    top: 35px;
+    right: 35px;
+    font-weight: 900;
+    color: #ffd700;
+    background-color: #010101;
+    border: none;
+}
+
+button.signOut:hover {
+    border: 1px solid #ffd700;
 }

@@ -1,0 +1,140 @@
+.Test{
+    background-color: #ffd700;
+}
+
+.propertiesTab{
+    height: 1100px;
+    width: 880px;
+    overflow: auto;
+    background-color: #010101;
+}
+
+.myProperties{
+    position: absolute;
+    display: inline-block;
+    left: 100px;
+    top: 110px;
+    font-family: copperplate;
+    font-size: 18px;
+    margin-top: 10px;
+    font-weight: 900;
+    color: #ffd700;
+}
+
+.savedProperties{
+    position: absolute;
+    display: inline-block;
+    left: 100px;
+    top: 500px;
+    font-family: copperplate;
+    font-size: 18px;
+    margin-top: 10px;
+    font-weight: 900;
+    color: #ffd700;
+}
+
+button.add{
+    position: absolute;
+    display: inline-block;
+    right: 150px;
+    top: 110px;
+    font-family: copperplate;
+    font-size: 18px;
+    margin-top: 10px;
+    font-weight: 900;
+    background-color: #010101;
+    color: #ffd700;
+    border: none;
+}
+
+button.add:hover{
+    border: 1px solid #ffd700;
+}
+
+.addScreen{
+    position: absolute;
+    background-color: #010101;
+    border-style: solid;
+    border-color: #ffd700;
+    border-width: 1px;
+    height: 400px;
+    width: 300px;
+    right: 0px;
+    top: 150px;
+    padding-left: 10px;
+    z-index: 1000;
+}
+
+.propertiesText{
+    font-family: copperplate;
+    font-size: 14px;
+    margin-top: 10px;
+    font-weight: 900;
+    color: #ffd700;
+}
+
+input.propertiesPicture{
+    position: relative;
+    display: block;
+}
+
+input.propertiesAddress{
+    position: relative;
+    display: block;
+}
+
+input.propertiesPrice{
+    position: relative;
+    display: block;
+}
+
+input.propertiesRent{
+    position: relative;
+    display: block;
+}
+
+input.document{
+    display: block;
+}
+
+button.close{
+    position: relative;
+    margin-bottom: 20px;
+    display: inline-block;
+}
+
+button.submitProperty{
+    position: absolute;
+    font-family: copperplate;
+    font-weight: 900;
+    left: 130px;
+    bottom: 10px;
+    background-color: #ffd700;
+    border: none;
+}
+
+.myPropertiesList{
+    height: 300px;
+    left: 100px;
+    top: 150px;
+    position: absolute;
+    overflow-y: scroll;
+    z-index: 0;
+    
+}
+
+.myPropertiesList:hover{
+    border: 2px solid #ffd700;
+}
+
+.savedPropertiesList{
+    height: 400px;
+    position: absolute;
+    left: 100px;
+    top: 550px;
+    overflow-y:auto;
+}
+
+.savedPropertiesList:hover{
+    border: 2px solid #ffd700;
+}
