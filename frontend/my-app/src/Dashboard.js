@@ -37,7 +37,7 @@ class Dashboard extends React.Component {
     }
 
     checkLoginStatus() {
-        axios.get("https://www.realexinvest.com:8443/login", { withCredentials: true })
+        axios.get("http://127.0.0.1:8080/login", { withCredentials: true })
         .then(response => {
             if (this._isMounted && response.data.logged_in) {
                 let data = JSON.stringify({
@@ -207,7 +207,7 @@ class Dashboard extends React.Component {
             username: "",
             password: ""
         });
-        axios.post('https://www.realexinvest.com:8443/login', data, {
+        axios.post('http://127.0.0.1:8080/login', data, {
             headers: {
               'Content-Type': 'application/json',
             },
