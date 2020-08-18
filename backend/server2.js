@@ -28,7 +28,7 @@ var store = new MongoDBStore({
 
 //Change for security
 var corsOptions = {
-    origin: 'https://www.realexinvest.com',
+    origin: 'http://127.0.0.1:3000', // http://127.0.0.1:3000  https://www.realexinvest.com  
     credentials: true,
     allowHeaders: ['Content-Type'],
     preflightContinue: true,
@@ -178,6 +178,93 @@ app.post('/login', function(req, res){
     }
 });
 
+
+//Creates account
+app.post('/createAccount', function(req, res){
+    var username = req.body.username;
+    var email = req.body.email;
+    var password = req.body.password;
+    var user = {
+        username: username,
+        email: email,
+        password: password,
+        saved: [],
+        numPublished: 0,
+        canPublish: 0
+    };
+    //Checking with Mongo 
+    try {
+        MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true }, (err, client) => {
+            if (err) throw err;
+            db = client.db("RealexAlpha");
+            var myPromise = () => {
+                return new Promise((resolve, reject) => {
+                    db.collection("Users", (err, collection) => {
+                        collection.countDocuments({username:username})
+                            .then((result) => {
+                                if (result >= 1) {
+                                    resolve("Taken");
+                                    return;
+                                }
+                                collection.insertOne(user).then((result) => {
+                                    // Check error in result
+                                    
+                                    //Insert admin message
+                                    db.collection("Messages", (err, collection) => {
+                                        var message = {
+                                            sender: "Admin",
+                                            receiver: username,
+                                            text: "How can I help you?",
+                                            date: Date.now()
+                                        }
+                                        collection.insertOne(message).then((result) => {
+                                            //check send message error
+                                            resolve("Success");
+                                        })
+                                    })
+                                    
+                                });
+                            } 
+                        ) 
+                    })
+                })
+            };
+            var callMyPromise = async () => {
+                var result = await (myPromise());
+                //anything here is executed after result is resolved
+                return result;
+            };
+            callMyPromise().then(function(result) {
+                client.close();
+                var response;
+                if(result == "Taken") {
+                    response = {
+                        success: false,
+                        taken:true
+                    };
+                } else if (result == "Success") {
+                    //Log in user
+                    if(!req.session.page_views)
+                        req.session.page_views = 1;
+                    else
+                        req.session.page_views++;
+                    req.session.logged_in = true;
+                    req.session.username = req.body.username;
+                    response = {
+                        success: true,
+                        taken:false
+                    };
+                    console.log("ACCOUNT CREATED");
+                }
+                
+                res.end(JSON.stringify(response));
+            });
+        }); 
+    } catch (e) {
+        next(e)
+    }
+});
+
 app.post('/save', function(req, res){
     var username = req.body.username;
     var id = req.body.id;
@@ -217,8 +304,9 @@ app.post('/save', function(req, res){
 });
 
 //Get all properties in Mongo
-app.get('/properties', function(req, res){
+app.post('/getProperties', function(req, res){
     //Checking with Mongo 
+    var username = req.body.username;
     try {
         MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true }, (err, client) => {
             if (err) throw err;
@@ -227,7 +315,7 @@ app.get('/properties', function(req, res){
                 return new Promise((resolve, reject) => {
                     db.collection("Properties", (err, collection) => {
                         if (err) throw err;
-                        var cursor = collection.find({}, {projection:{documents:0}});//Cut out documents
+                        var cursor = collection.find({"$or": [{"owner": username}, {"published": true}]}, {projection:{documents:0}});//Cut out documents
                         var properties = [];
                         cursor.each(function(err, item) {
                             // If the item is null then the cursor is exhausted/empty and closed
@@ -259,6 +347,116 @@ app.get('/properties', function(req, res){
         next(e)
     }
 
+});
+
+//Get all messages for this user in Mongo
+app.post('/messages', function(req, res){
+    //Checking with Mongo 
+    var username = req.body.username;
+    try {
+        MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true }, (err, client) => {
+            if (err) throw err;
+            db = client.db("RealexAlpha");
+            var myPromise = () => {
+                return new Promise((resolve, reject) => {
+                    db.collection("Messages", (err, collection) => {
+                        if (err) throw err;
+                        var sentCursor = collection.find({"sender": username});
+                        var messages = []; //returning empty
+                        sentCursor.each(function(err, item) {
+                            // If the item is null then the cursor is exhausted/empty and closed
+                            if(!(item === null)) {
+                                messages.push(item);
+                            } else {
+                                resolve(messages);
+                                return;
+                            }
+                        });
+                    })
+                })
+            };
+            var myPromise2 = () => {
+                return new Promise((resolve, reject) => {
+                    db.collection("Messages", (err, collection) => {
+                        if (err) throw err;
+                        var receivedCursor = collection.find({"receiver": username});
+                        var messages = [];
+                        receivedCursor.each(function(err, item) {
+                            // If the item is null then the cursor is exhausted/empty and closed
+                            if(!(item === null)) {
+                                messages.push(item);
+                            } else {
+                                resolve(messages);
+                                return;
+                            }
+                        });
+                    })
+                })
+            };
+            var callMyPromise = async () => {
+                var result = await (myPromise()); //get sent messages
+                var result2 = await (myPromise2()); //get received messages
+                //anything here is executed after result is resolved
+                return result.concat(result2);
+            };
+            callMyPromise().then(function(result) {
+                client.close();
+                response = {
+                    messages: result
+                };
+                res.end(JSON.stringify(response));
+            });
+        }); 
+    } catch (e) {
+        next(e)
+    }
+
+});
+
+//Sends message
+app.post('/sendMessage', function(req, res){
+    var sender = req.body.sender;
+    var receiver = req.body.receiver;
+    var text = req.body.text;
+    var date = req.body.date;
+    var message = {
+        sender: sender,
+        receiver: receiver,
+        text: text,
+        date: date
+    };
+    //Checking with Mongo 
+    try {
+        MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true }, (err, client) => {
+            if (err) throw err;
+            db = client.db("RealexAlpha");
+            var myPromise = () => {
+                return new Promise((resolve, reject) => {
+                    db.collection("Messages", (err, collection) => {
+                        collection.insertOne(message).then((result) => {
+                            // Check error in result
+                            resolve("Success");
+                        });
+                    })
+                })
+            };
+            var callMyPromise = async () => {
+                var result = await (myPromise());
+                //anything here is executed after result is resolved
+                return result;
+            };
+            callMyPromise().then(function(result) {
+                client.close();
+                var response = {
+                    success: false,
+                    taken:true
+                };
+                res.end(JSON.stringify(response));
+            });
+        }); 
+    } catch (e) {
+        next(e)
+    }
 });
 
 app.post('/getUser', function(req, res){
@@ -579,7 +777,14 @@ app.post('/addProperty', cpUpload, function(req, res){
     }
     var property = {
         picture: fs.readFileSync(req.files['picture'][0].path),
+        description: req.body.description,
         address: req.body.address,
+        bedrooms: req.body.bedrooms,
+        bathrooms: req.body.bathrooms,
+        squareFootage: req.body.squareFootage,
+        yearBuilt: req.body.yearBuilt,
+        heating: req.body.heating,
+        cooling: req.body.cooling,
         price: req.body.price,
         rent: req.body.rent,
         owner: req.body.owner,
@@ -595,6 +800,79 @@ app.post('/addProperty', cpUpload, function(req, res){
                     db.collection("Properties", (err, collection) => {
                         if (err) throw err;
                         resolve(collection.insertOne(property));
+                    })
+                })
+            };
+            var callMyPromise = async () => {
+                await (myPromise());
+                //anything here is executed after result is resolved
+                return;
+            };
+            callMyPromise().then(function() {
+                client.close();
+                response = {
+                    success: true
+                };
+                res.end(JSON.stringify(response));
+            });
+        }); 
+    } catch (e) {
+        next(e)
+    }
+});
+
+// Edit property in Mongo
+var cpUpload = upload.fields([{ name: 'picture', maxCount: 1 }, { name: 'documents', maxCount: 8 }])
+app.post('/editProperty', cpUpload, function(req, res){
+    var id = req.body.id;
+    var picture = fs.readFileSync(req.files['picture'][0].path);
+    var description = req.body.description;
+    var address = req.body.address;
+    var bedrooms = req.body.bedrooms;
+    var bathrooms = req.body.bathrooms;
+    var squareFootage = req.body.squareFootage;
+    var yearBuilt = req.body.yearBuilt;
+    var heating = req.body.heating;
+    var cooling = req.body.cooling;
+    var price = req.body.price;
+    var rent = req.body.rent;
+    var documents = [];
+    if(req.files['documents']){
+        documents = req.files['documents'].map((document) =>
+            fs.readFileSync(document.path)
+        );
+    }
+    //Checking with Mongo 
+    
+    try {
+        MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true }, (err, client) => {
+            if (err) throw err;
+            db = client.db("RealexAlpha");
+            var myPromise = () => {
+                return new Promise((resolve, reject) => {
+                    db.collection("Properties", (err, collection) => {
+                        if (err) throw err;
+                        collection.findOneAndUpdate(
+                            {_id:ObjectID(id)},
+                            [
+                                {"$set": {"picture": picture}},
+                                {"$set": {"description": description}},
+                                {"$set": {"address": address}},
+                                {"$set": {"bedrooms": bedrooms}},
+                                {"$set": {"bathrooms": bathrooms}},
+                                {"$set": {"squareFootage": squareFootage}},
+                                {"$set": {"yearBuilt": yearBuilt}},
+                                {"$set": {"heating": heating}},
+                                {"$set": {"cooling": cooling}},
+                                {"$set": {"price": price}},
+                                {"$set": {"rent": rent}},
+                                {"$set": {"documents": documents}}
+                            ]
+                            //new: true,
+                            //upsert : true
+                        ).then((result) => {
+                            resolve();
+                        });
                     })
                 })
             };
