@@ -56,7 +56,7 @@ class Home extends React.Component {
     }
 
     checkLoginStatus(tried) {
-        axios.get("http://127.0.0.1:8080/login", { withCredentials: true })
+        axios.get("https://www.realexinvest.com:8443/login", { withCredentials: true })
         .then(response => {
             if (
               response.data.logged_in &&
@@ -89,7 +89,7 @@ class Home extends React.Component {
           username: username,
           password: password_enc.digest().toHex()
         });
-        axios.post('http://127.0.0.1:8080/login', data, {
+        axios.post('https://www.realexinvest.com:8443/login', data, {
           headers: {
             'Content-Type': 'application/json',
           },
@@ -110,7 +110,7 @@ class Home extends React.Component {
           email: email,
           password: password_enc.digest().toHex()
         });
-        axios.post('http://127.0.0.1:8080/createAccount', data, {
+        axios.post('https://www.realexinvest.com:8443/createAccount', data, {
           headers: {
             'Content-Type': 'application/json',
           },
