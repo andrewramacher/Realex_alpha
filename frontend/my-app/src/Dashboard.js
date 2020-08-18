@@ -3,7 +3,10 @@ import axios from 'axios';
 import './Dashboard.css';
 import Browse from './dashboardComponents/Browse';
 import Chat from './dashboardComponents/Chat';
+import About from './About';
 import Properties from './dashboardComponents/Properties';
+import p_logo from './images/Elegant.png';
+import ClipLoader from "react-spinners/ClipLoader";
 import {
     Redirect
 } from "react-router-dom";
@@ -16,24 +19,32 @@ class Dashboard extends React.Component {
           loggedInStatus: "NOT_LOGGED_IN",
           username: "",
           hasChecked: false,
+          hasGot: false,
           clicked: "BROWSE",
+          messages: [],
+          chatUser: "",
           properties: [],
           user: [],
-          rerenders: 0
+          showAccountScreen: false
         };
     
         this.checkLoginStatus = this.checkLoginStatus.bind(this);
         this.signOut = this.signOut.bind(this);
-        this.browse = this.browse.bind(this);
-        this.chat = this.chat.bind(this);
-        this.properties = this.properties.bind(this);
+        this.browse = this.browse.bind(this); //handles browse button click
+        this.chatClicked = this.chatClicked.bind(this);
+        this.openChat = this.openChat.bind(this);
+        this.properties = this.properties.bind(this); //handles properties button click
+        this.aboutClicked = this.aboutClicked.bind(this);
         this.makeStruct = this.makeStruct.bind(this);
         this.getProperties = this.getProperties.bind(this);
         this.saveProperty = this.saveProperty.bind(this);
+        this.getMessages = this.getMessages.bind(this);
+        this.sendMessage = this.sendMessage.bind(this);
+        this.getPageData = this.getPageData.bind(this);
         this.unsaveProperty = this.unsaveProperty.bind(this);
         this.publishProperty = this.publishProperty.bind(this);
         this.unpublishProperty = this.unpublishProperty.bind(this);
-        this.updateUser = this.updateUser.bind(this);
+        this.onShowAccountScreen = this.onShowAccountScreen.bind(this);
     }
 
     checkLoginStatus() {
@@ -49,6 +60,7 @@ class Dashboard extends React.Component {
                     },
                     withCredentials: true
                 }).then(innerResponse => { //get rest of user data
+                    this.getPageData(response.data.username);
                     this.setState({
                         loggedInStatus: "LOGGED_IN",
                         username: response.data.username,
@@ -69,7 +81,21 @@ class Dashboard extends React.Component {
         })
         .catch(error => {
             console.log("check login error", error);
+            this.setState({
+                loggedInStatus: "NOT_LOGGED_IN",
+                username: "",
+                user: [],
+                hasChecked: true
+            });
         });
+
+        //for debugging
+        // this.setState({
+        //     loggedInStatus: "LOGGED_IN",
+        //     username: "Drew",
+        //     user: [],
+        //     hasChecked: true
+        // });
     }
 
     makeStruct(names) {
@@ -83,10 +109,17 @@ class Dashboard extends React.Component {
         return constructor;
     }
 
-    getProperties() {
+    getProperties(username) {
         var Property = this.makeStruct("id picture owner address price rent cap published");
-        axios.get("http://127.0.0.1:8080/properties", { withCredentials: true })
-        .then(response => {
+        let data = JSON.stringify({
+            username: username
+        });
+        axios.post("http://127.0.0.1:8080/getProperties", data, {
+            headers: {
+                'Content-Type': 'application/json',
+              },
+              withCredentials: true
+        }).then(response => {
             var propertiesList = response.data.properties.map((property) => {
                 var base64Flag = 'data:image/png;base64,';
                 return new Property(property._id, 
@@ -105,29 +138,82 @@ class Dashboard extends React.Component {
         });
     }
 
-    //might not be used
-    updateUser(username) {
+    getMessages(username) {
+        var Message = this.makeStruct("id sender receiver text date");
         let data = JSON.stringify({
-            user: username
+            username: username
         });
-        axios.post("http://127.0.0.1:8080/getUser", data,  {
+        axios.post("http://127.0.0.1:8080/messages", data, {
             headers: {
               'Content-Type': 'application/json',
             },
             withCredentials: true
         }).then(response => {
-            this.setState({
-                user: response.data.user
+            var messagesList = response.data.messages.map((message) => {
+                return new Message(
+                    message._id, 
+                    message.sender,
+                    message.receiver, 
+                    message.text, 
+                    message.date,
+                )
             });
+            this.setState({messages: messagesList});
         })
         .catch(error => {
             console.log("check login error", error);
         });
     }
 
+    sendMessage(receiver, text) {
+        //Move this to dashboard so new messages show up if you leave chat menu
+
+        //add message to database
+        //id sender receiver text date
+        if(receiver === "") {
+            return;
+        }
+        var date = Date.now();
+        let message = {
+            sender: this.state.username,
+            receiver: receiver,
+            text: text,
+            date: date
+        };
+        axios.post('http://127.0.0.1:8080/sendMessage', JSON.stringify(message), {
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            withCredentials: true
+        }).then(response => {
+            //Check if successful
+            if(response.data.success) {
+                //add message to messages
+                this.setState((prevState) => ({messages: [...prevState.messages, message]}));
+            } else {
+                //do something!!
+                //add message to messages
+                this.setState((prevState) => ({messages: [...prevState.messages, message]}));
+            }
+        })
+        
+        
+    }
+
+    getPageData(username) {
+        this.getProperties(username);
+        this.getMessages(username);
+        // window.setInterval(
+        //     this.newMessages() //not written yet but will check if you messages need to be fetched
+        // , 5000);
+        this.setState({hasGot: true});
+    }
+
     saveProperty(property) {
         if(this.state.user.saved.includes(property.id)) {
             //alert("Property has already been saved");
+            return;
+        } else if (this.state.username === property.owner) {
             return;
         }
         let data = JSON.stringify({
@@ -183,13 +269,21 @@ class Dashboard extends React.Component {
         this.setState({user: newUser, properties: newProperties});
     }
 
+    openChat(owner) {
+        //open chat from properties
+        this.setState({
+            clicked: "CHAT",
+            chatUser: owner
+        })
+    }
+
     browse() {
         this.setState({
             clicked: "BROWSE"
         });
     }
 
-    chat() {
+    chatClicked() {
         this.setState({
             clicked: "CHAT"
         });
@@ -198,6 +292,12 @@ class Dashboard extends React.Component {
     properties() {
         this.setState({
             clicked: "PROPERTIES"
+        });
+    }
+
+    aboutClicked() {
+        this.setState({
+            clicked: "ABOUT"
         });
     }
 
@@ -219,40 +319,69 @@ class Dashboard extends React.Component {
         }) 
     }
 
-
+    onShowAccountScreen() {
+        var newVal = !this.state.showAccountScreen;
+        this.setState({showAccountScreen: newVal});
+    }
 
     componentDidMount() {
         this._isMounted = true;
+        this.interval = setInterval(() => this.checkLoginStatus(), 30000);
         this.checkLoginStatus();
-        this.getProperties();
     }
 
     componentWillUnmount() {
         this._isMounted = false;
+        clearInterval(this.interval);
     }
 
 
 
     render() {
         //Wait on credentials check
-        /*if(this.state.loggedInStatus === "NOT_LOGGED_IN" && this.state.hasChecked) {
+        if(this.state.loggedInStatus === "NOT_LOGGED_IN" && this.state.hasChecked) {
             return <Redirect push to='/'/>;
-        } else*/ if (this.state.loggedInStatus === "NOT_LOGGED_IN") {
+        } else if (this.state.loggedInStatus === "NOT_LOGGED_IN") {
             return (
-                <div>Checking Credentials</div>
+                <ClipLoader
+                        loading={true}
+                        color="#010101"
+                        css="
+                            position absolute; 
+                            top: 50%;
+                            left: 50%;
+                            transform: translate(50%, 50%);
+                        "
+                />
             );
         }
 
-        //check which component and button to display
+        //Handle Account
+        let accountScreen;
+        if(this.state.showAccountScreen) {
+            accountScreen = <div className="accountScreen">
+                <div className="canPublishText">Has Published: </div>
+                <div className="canPublish">{this.state.user.numPublished}</div>
+                <button className="signOut" onClick={this.signOut}>Sign Out</button>
+            </div>
+        }
+
+        //Handle Component and Main Three Buttons
         let shown;
         let browseButton = <button className="browse" onClick={this.browse}>Browse</button>;
-        let chatButton = <button className="chat" onClick={this.chat}>Chat</button>;
+        let chatButton = <button className="chat" onClick={this.chatClicked}>Chat</button>;
         let propertiesButton = <button className="properties" onClick={this.properties}>Properties</button>;
+        let aboutButton = <button className="about" onClick={this.aboutClicked}>About</button>;
         if(this.state.clicked == "BROWSE") {
             shown = <Browse properties={this.state.properties} saveProperty={this.saveProperty}/>;
             browseButton = <button className="browseClicked">Browse</button>;
         } else if(this.state.clicked == "CHAT") {
-            shown = <Chat/>;
+            shown = <Chat 
+                messages={this.state.messages} 
+                username={this.state.username} 
+                chatUser={this.state.chatUser} 
+                sendMessage={this.sendMessage}
+            />;
             chatButton = <button className="chatClicked">Chat</button>;
         } else if(this.state.clicked == "PROPERTIES") {
             shown = <Properties 
@@ -262,18 +391,31 @@ class Dashboard extends React.Component {
                 unsaveProperty={this.unsaveProperty}
                 publishProperty={this.publishProperty}
                 unpublishProperty={this.unpublishProperty}
+                addLocalProperty={this.addLocalProperty}
+                chat={this.openChat}
             />;
             propertiesButton = <button className="propertiesClicked">Properties</button>;
+        } else if(this.state.clicked == "ABOUT") {
+            shown = <About/>
+            aboutButton = <button className="aboutClicked">About</button>;
         }
 
 
         return (
           <div className="Dashboard">
-            {browseButton}
-            {chatButton}
-            {propertiesButton}
-            <button className="signOut" onClick={this.signOut}>Sign Out</button>
+            <div className="topBar">
+                <img className="dashboardPlant" height={72} width={108} src={p_logo} alt="P_logo"/>
+                <div className="dashboardRealExpress">Real Express</div>
+            </div>
+            <div className="middleBar">
+                {browseButton}
+                {chatButton}
+                {propertiesButton}
+                {aboutButton}
+            </div>
+            <button className="accountButton" onClick={this.onShowAccountScreen}>{this.state.username}</button>
             {shown}
+            {accountScreen}
           </div>
         );
     }

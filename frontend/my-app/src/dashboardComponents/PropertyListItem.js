@@ -5,7 +5,10 @@ class PropertyListItem extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            buttonText: this.props.buttonText
+            buttonText: this.props.buttonText,
+            fields: this.props.fields,
+            username: this.props.username,
+            property: this.props.property
         };
     
         this.onViewClicked = this.onViewClicked.bind(this);
@@ -28,32 +31,52 @@ class PropertyListItem extends React.Component {
     
     
     render() {
+        //handle if owned
+        let owner;
+        if(this.state.username === this.state.property.owner) {
+            let published;
+            if(this.state.property.published) {
+                published = "Yes";
+            } else {
+                published = "No";
+            }
+            owner =  <div className='textField'>
+                <div>Published:</div>
+                <div>{published}</div>
+            </div>;
+        } else {
+            owner =  <div className='textField'>
+                <div>Owner:</div>
+                <div>{this.state.property.owner}</div>
+            </div>;
+        }
+
+        //handle delete button
         let deleteButton;
         if(this.props.deleteButton) {
             deleteButton = <button className="deletePropertyButton" onClick={() => {this.onDeleteClicked()}}>x</button>
         }
         return(
             <div className='propertyListItem'>
-                <img className='picture' src={this.props.property.picture}/>
-                <div className='address'>
-                    <div>Address:</div>
-                    <div>{this.props.property.address}</div>
-                </div>
-                <div className='price'>
-                    <div>Price:</div>
-                    <div>{this.props.property.price}</div>
-                </div>
-                <div className='rent'>
-                    <div>Rent:</div>
-                    <div>{this.props.property.rent}</div>
-                </div>
-                <div className='owner'>
-                    <div>Owner:</div>
-                    <div>{this.props.property.owner}</div>
+                <img className='picture' src={this.state.property.picture}/>
+                <div className="fields">
+                    <div className='textField'>
+                        <div>Address:</div>
+                        <div>{this.state.property.address}</div>
+                    </div>
+                    <div className='textField'>
+                        <div>Price:</div>
+                        <div>{this.state.property.price}</div>
+                    </div>
+                    <div className='textField'>
+                        <div>Rent:</div>
+                        <div>{this.state.property.rent}</div>
+                    </div>
+                   {owner}
                 </div>
                 <div className='buttons'>
                     <button className='view' onClick={this.onViewClicked}>View</button>
-                    <button className='other' onClick={() => {this.onOtherClicked(this.props.property)}}>{this.state.buttonText}</button>
+                    <button className='other' onClick={() => {this.onOtherClicked(this.state.property)}}>{this.state.buttonText}</button>
                 </div>
                 {deleteButton}
             </div>

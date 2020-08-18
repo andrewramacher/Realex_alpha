@@ -7,10 +7,11 @@
     width: 200px;
     top: 300px;
     left: 550px;
-    background-color: #010101;
+    background-color: #E4E4E4;
     border-style: solid;
     border-color: #ffd700;
     border-width: 1px;
+    color: #010101;
 }
 
 .popUpText{

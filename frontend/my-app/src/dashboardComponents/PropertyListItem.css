@@ -1,56 +1,49 @@
 .propertyListItem{
-    height: 150px;
-    width: 1000px;
+    position: relative;
+    height: 100px;
+    width: 95%;
     border: 5px;
     font-size: 16px;
     margin-top: 10px;
-    margin-left: 10px;
-    border-color: #ffd700;
+    margin-bottom: 25px;
+    margin-left: 2.5%;
+    margin-right: 2.5%;
+    color: #010101;
+    background-color: #E4E4E4;
+    border: 5px solid #E4E4E4;
+    border-radius: 10px;
 }
 
 img.picture{
+    position: relative;
     display: inline-block;
     height: 100px;
-    width: 100px;
+    margin-left: 2px;
+    width: auto;
 }
 
-.address{
-    display: inline-block;
+.fields{
     position: relative;
-    width: 150px;
+    display: inline-block;
+    overflow: hidden;
+    height:35px;
+    width: 80%;
+    min-width: 315px;
+    top: -35px;
+}
+
+.textField{
+    position: relative;
+    display: inline-block;
     margin-left: 50px;
-    top: -30px;
-}
-
-.price{
-    display: inline-block;
-    position: relative;
     width: 150px;
-    margin-left: 20px;
-    top: -30px;
-}
-
-.rent{
-    display: inline-block;
-    position: relative;
-    width: 150px;
-    margin-left: 20px;
-    top: -30px;
-}
-
-.owner{
-    display: inline-block;
-    position: relative;
-    width: 150px;
-    margin-left: 20px;
-    top: -30px;
+    top: 0px;
 }
 
 .buttons{
-    display: inline-block;
-    position: relative;
-    margin-left: 20px;
-    top: -30px;
+    position: absolute;
+    top: 25px;
+    right: 45px;
 }
 
 button.view{
@@ -64,8 +57,7 @@ button.other{
 }
 
 button.deletePropertyButton{
-    display: inline-block;
-    position: relative;
-    margin-left: 40px;
-    top: -40px;
+    position: absolute;
+    top: 37px;
+    right: 5px;
 };

@@ -19,7 +19,7 @@ class DocumentInput extends React.Component {
     
     render() {
         return(
-            <input className="document" type="file" files={this.state.document} onChange={this.onDocumentChange}/>
+            <input className="documentInput" type="file" files={this.state.document} onChange={this.onDocumentChange}/>
         );
     }
 }

@@ -1,0 +1,25 @@
+.About{
+    position: absolute;
+    color: #5E5E5E;
+    background-color: #E4E4E4;
+    border: 1px solid #ffd700;
+    height: 60%;
+    width: 80%;
+    top: 150px;
+    padding: 50px;
+    border-radius: 15px;
+    margin: auto;
+    overflow: auto;
+}
+
+h1{
+    font-family: copperplate;
+    text-align: center;
+}
+
+ol{
+    background: white;
+    border-radius: 15px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}

@@ -2,15 +2,17 @@ import React from 'react';
 import axios from 'axios';
 import './Browse.css';
 import PropertyListItem from './PropertyListItem';
+import ViewProperty from './ViewProperty';
 import PopUp from '.././PopUp';
-import searchGlass from './../images/search.png';
+import searchGlass from './../images/searchBlackWhite.png';
+import ClipLoader from "react-spinners/ClipLoader";
 
 class Browse extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
           search: "",
-          dropdown: "Price",
+          dropdown: "Age",
           properties: [],
           showView: false,
           viewProperty: null,
@@ -27,7 +29,8 @@ class Browse extends React.Component {
     }
 
     handleChangeSearch(event) {
-        this.setState({search: event.target.value});
+        this.setState({search: ""});
+        //this.setState({search: event.target.value});
     }
 
     handleChangeDropdown(event) {
@@ -55,10 +58,16 @@ class Browse extends React.Component {
                 id: response.data.property._id, 
                 picture: base64Flag + response.data.property.picture,
                 owner: response.data.property.owner, 
+                description: response.data.property.description,
                 address: response.data.property.address, 
                 price: response.data.property.price, 
+                bedrooms: response.data.property.bedrooms,
+                bathrooms: response.data.property.bathrooms,
+                squareFootage: response.data.property.squareFootage,
+                yearBuilt: response.data.property.yearBuilt,
+                heating: response.data.property.heating,
+                cooling: response.data.property.cooling,
                 rent: response.data.property.rent, 
-                cap: response.data.property.cap, 
                 documents: documents
             };
             this.setState({showView: true, viewProperty: property});
@@ -94,25 +103,20 @@ class Browse extends React.Component {
         let propertyView;
         if(this.state.showView) {
             if(this.state.viewProperty) {
-                let documents;
-                if(this.state.viewProperty.documents) { 
-                    documents= this.state.viewProperty.documents.map( document =>
-                        <img className="viewDocument" src={document}/>
-                    );
-                }
-                propertyView = <div className="propertyView">
-                    <button onClick={this.closeView}>x</button>
-                    <img src={this.state.viewProperty.picture}/>
-                    <div>{this.state.viewProperty.address}</div>
-                    <div>{this.state.viewProperty.price}</div>
-                    <div>{this.state.viewProperty.rent}</div>
-                    <div>{this.state.viewProperty.cap}</div>
-                    {documents}
-                </div>
+                propertyView = <ViewProperty property={this.state.viewProperty} closeView={this.closeView}/>
             } else {
                 propertyView = <div className="propertyView">
-                    <button onClick={this.closeView}>x</button>
-                    <div>Loading...</div>
+                    <button className="closeView" onClick={this.closeView}>x</button>
+                    <ClipLoader
+                        loading={true}
+                        color="#010101"
+                        css="
+                            position absolute; 
+                            top: 50%;
+                            left: 50%;
+                            transform: translate(50%, 50%);
+                        "
+                    />
                 </div>
             }
         }
@@ -149,9 +153,10 @@ class Browse extends React.Component {
                     value={this.state.dropdown} 
                     onChange={this.handleChangeDropdown} 
                 >
-                    <option value="Price">Price</option>
+                    <option value="Age">Age</option>
+                    {/* <option value="Price">Price</option>
                     <option value="New">New</option>
-                    <option value="Cap Rate">Cap Rate</option>
+                    <option value="Cap Rate">Cap Rate</option> */}
                 </select>  
                 <div className="propertiesList">{propertiesList}</div>  
                 {propertyView}

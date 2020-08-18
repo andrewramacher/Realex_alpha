@@ -13,7 +13,6 @@
   color: white;
 }
 
-
 button.small {
   position: absolute;
   background-color: #010101;
@@ -39,6 +38,18 @@ button.signIn {
   border: none;
 }
 
+button.signIn:hover {
+  border: 1px solid #ffd700;
+}
+
+img.plant {
+  animation: fadeIn ease 5s;
+}
+
+@keyframes fadeIn {
+  0% {opacity:0;}
+  100% {opacity:1;}
+}
 
 img.small {
   position: relative;
@@ -53,10 +64,18 @@ img.small {
   top: 70px;
 }
 
+.CreateAccount {
+  position: absolute;
+  right: 50px;
+  top: 70px;
+}
+
 .want {
   font-family: copperplate;
   letter-spacing: 1px;
   font-weight: 900;
+  font-size: 22px;
+  animation: fadeIn ease 5s;
 }
 
 .name {
@@ -65,5 +84,14 @@ img.small {
   font-weight: 400;
   font-size: 40px;
   letter-spacing: 1px;
+  animation: fadeIn ease 5s;
+}
+
+.homeAbout{
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  top: -5%;
+  left: 5%;
 }
 

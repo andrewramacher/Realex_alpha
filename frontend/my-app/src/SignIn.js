@@ -11,12 +11,18 @@ class SignIn extends React.Component {
         };
     
         this.submit = this.submit.bind(this);
+        this.createAccount = this.createAccount.bind(this);
         this.handleChangeUsername = this.handleChangeUsername.bind(this);
         this.handleChangePassword = this.handleChangePassword.bind(this);
+        this.showAbout = this.showAbout.bind(this);
     }
 
     submit() {
       this.props.onSubmit(this.state.username, this.state.password);
+    }
+
+    createAccount() {
+      this.props.createAccount();
     }
 
     handleChangeUsername(event) {
@@ -27,15 +33,22 @@ class SignIn extends React.Component {
       this.setState({password: event.target.value});
     }
 
+    showAbout() {
+      this.props.showAbout();
+    }
+
 
     render() {
         return (
           <div className="SignIn">
             <div className="userText">Username</div>
-            <input type="text" value={this.state.username} onChange={this.handleChangeUsername} />
+            <input className="signInInput" type="text" value={this.state.username} onChange={this.handleChangeUsername} />
             <div className="passText">Password</div>
-            <input type="text" value={this.state.password} onChange={this.handleChangePassword} />
-            <button className="submit" onClick={this.submit}>Submit</button>
+            <input className="signInInput" type="password" value={this.state.password} onChange={this.handleChangePassword} />
+            <button className="submitSignIn" onClick={this.submit}>Submit</button>
+            <button className="createAccount" onClick={this.createAccount}>Create Account</button>
+            <button className="createAccount" onClick={this.showAbout}>Forgot Password?</button>
+            <div className="incorrectText">{this.props.incorrect}</div>
           </div>
         );
     }

@@ -1,7 +1,10 @@
 import React from 'react';
 import PropertyListItem from './PropertyListItem';
-import DocumentInput from './DocumentInput';
+import SubmitProperty from './SubmitProperty';
+import ViewProperty from './ViewProperty';
 import PopUp from '.././PopUp';
+import ClipLoader from "react-spinners/ClipLoader";
+
 import axios from 'axios';
 import './Properties.css';
 
@@ -12,36 +15,36 @@ class Properties extends React.Component {
         //You can only add one property at a time so it works
         this.state = {
             addClicked: false,
-            picture: null,
-            address: "",
-            price: "",
-            rent: "",
-            documents: [],
-            numDocuments: 0,
+            editClicked: false,
+            editProperty: null,
             publishClicked: false,
             toPublish: null,
             unpublishClicked: false,
             toUnpublish: null,
             maxPublished: false,
             deleteClicked: false,
+            showView: false,
+            viewProperty: null,
             toDelete: null,
+            hasDeleted: [],
             unsaveClicked: false,
-            toUnsave: null
+            toUnsave: null,
+            okPopUp: false,
+            popUpText: ""
         };
     
         this.addClicked = this.addClicked.bind(this);
         this.addCloseClicked = this.addCloseClicked.bind(this);
-        this.onPictureChange = this.onPictureChange.bind(this);
-        this.onAddressChange = this.onAddressChange.bind(this);
-        this.onPriceChange = this.onPriceChange.bind(this);
-        this.onRentChange = this.onRentChange.bind(this);
-        this.onDocumentChange = this.onDocumentChange.bind(this);
-        this.addDocument = this.addDocument.bind(this);
-        this.removeDocument = this.removeDocument.bind(this);
+        this.editClicked = this.editClicked.bind(this);
+        this.editCloseClicked = this.editCloseClicked.bind(this);
         this.submitProperty = this.submitProperty.bind(this);
+        this.editProperty = this.editProperty.bind(this);
         this.openChat = this.openChat.bind(this);
         this.publishProperty = this.publishProperty.bind(this);
         this.unpublishProperty = this.unpublishProperty.bind(this);
+        this.onViewClicked = this.onViewClicked.bind(this);
+        this.closeView = this.closeView.bind(this);
+        this.getProperty = this.getProperty.bind(this);
         this.deleteProperty = this.deleteProperty.bind(this);
         this.unsaveProperty = this.unsaveProperty.bind(this);
         this.onPublishClicked = this.onPublishClicked.bind(this);
@@ -49,6 +52,7 @@ class Properties extends React.Component {
         this.onMaxPublishClicked = this.onMaxPublishClicked.bind(this);
         this.onDeleteClicked = this.onDeleteClicked.bind(this);
         this.onUnsaveClicked = this.onUnsaveClicked.bind(this);
+        this.okPopUpClicked = this.okPopUpClicked.bind(this);
     }
 
     addClicked() {
@@ -61,48 +65,19 @@ class Properties extends React.Component {
         this.setState({addClicked: false});
     }
 
-    // Input handlers for add screen
-    onPictureChange(event) {
-        this.setState({picture: event.target.files[0]});
-    }
-
-    onAddressChange(event) {
-        this.setState({address: event.target.value});
-    }
-
-    onPriceChange(event) {
-        this.setState({price: event.target.value});
-    }
-
-    onRentChange(event) {
-        this.setState({rent: event.target.value});
-    } 
-
-    onDocumentChange(file, index) {
-        var newDocuments = this.state.documents;
-        if (index >= this.state.documents.length) {
-            newDocuments.push(file);
-        } else {
-            newDocuments[index] = file;
-        }
-        this.setState({documents: newDocuments});
-    } 
-    
-    addDocument() {
+    editClicked(id) {
+        this.getProperty(id, "EDIT")
         this.setState(prevState => ({
-            numDocuments: prevState.numDocuments + 1,
-            documents: [...prevState.documents, null]
-        }));  
+            editClicked: !prevState.editClicked
+        }));
     }
 
-    removeDocument() {
-        this.setState(prevState => ({
-            numDocuments: prevState.numDocuments - 1,
-            documents: prevState.documents.slice(0, prevState.documents.length - 1)
-        }));  
-    }//
+    editCloseClicked() {
+        this.setState({editClicked: false, editProperty: null});
+    }
 
-    submitProperty() {
+
+    submitProperty(property) {
         //id picture owner address price rent cap published
         // let data = JSON.stringify({
         //     picture: this.state.picture,
@@ -111,17 +86,24 @@ class Properties extends React.Component {
         //     rent: this.state.rent,
         //     documents: this.state.documents
         // });
-        if(this.state.picture === null || this.state.address === null || this.state.price === null || this.state.rent === null) {
-            alert("First 4 fields cannot be empty");
+        if(property.picture === null || property.address === null || property.price === null) {
+            alert("Picture, Address, and Price cannot be empty");
             return;
         }
         let formData = new FormData();
-        formData.append('picture', this.state.picture, 'Picture.png');
-        formData.append('address', this.state.address);
-        formData.append('price', this.state.price);
-        formData.append('rent', this.state.rent);
+        formData.append('picture', property.picture, 'Picture.png');
+        formData.append('description', property.description);
+        formData.append('address', property.address);
+        formData.append('bedrooms', property.bedrooms);
+        formData.append('bathrooms', property.bathrooms);
+        formData.append('squareFootage', property.squareFootage);
+        formData.append('yearBuilt', property.yearBuilt);
+        formData.append('heating', property.heating);
+        formData.append('cooling', property.cooling);
+        formData.append('price', property.price);
+        formData.append('rent', property.rent);
         formData.append('owner', this.props.username);
-        this.state.documents.map((document, index) => 
+        property.documents.map((document, index) => 
             formData.append('documents', document, 'Document' + index + '.png')
         );
         
@@ -139,25 +121,68 @@ class Properties extends React.Component {
             // else {
 
             // }
-            //This does not seem to be firing
             this.setState({
-                addClicked: false,
-                picture: null,
-                address: "",
-                price: "",
-                rent: "",
-                documents: [],
-                numDocuments: 0
+                addClicked: false, okPopUp: true, popUpText: "Property added, please refresh page"
             });
         })
     }
 
-    onViewClicked() {
+    editProperty(property) {
+        //id picture owner address price rent cap published
+        // let data = JSON.stringify({
+        //     picture: this.state.picture,
+        //     address: this.state.address,
+        //     price: this.state.price,
+        //     rent: this.state.rent,
+        //     documents: this.state.documents
+        // });
+        if(property.picture === null || property.address === null || property.price === null) {
+            alert("Picture, Address, and Price cannot be empty");
+            return;
+        }
+        let formData = new FormData();
+        formData.append('id', this.state.editProperty.id);
+        formData.append('picture', property.picture, 'Picture.png');
+        formData.append('description', property.description);
+        formData.append('address', property.address);
+        formData.append('bedrooms', property.bedrooms);
+        formData.append('bathrooms', property.bathrooms);
+        formData.append('squareFootage', property.squareFootage);
+        formData.append('yearBuilt', property.yearBuilt);
+        formData.append('heating', property.heating);
+        formData.append('cooling', property.cooling);
+        formData.append('price', property.price);
+        formData.append('rent', property.rent);
+        formData.append('owner', this.props.username);
+        property.documents.map((document, index) => 
+            formData.append('documents', document, 'Document' + index + '.png')
+        );
+        
+        axios.post('http://127.0.0.1:8080/editProperty', formData, {
+            headers: {
+              'Content-Type': 'multipart/form-data'
+            },
+            withCredentials: true
+        }).then(response => {
+            //do something if response is error
 
+            // if (response.data.success === true) {
+            //     alert("Property Added, refresh page to see");
+            // }
+            // else {
+
+            // }
+            this.setState({
+                editClicked: false, 
+                okPopUp: true, 
+                popUpText: "Property changed, please refresh page",
+                editProperty: null
+            });
+        })
     }
 
-    openChat() {
-
+    openChat(owner) {
+        this.props.chat(owner);
     }
 
     publishProperty() {
@@ -238,7 +263,68 @@ class Properties extends React.Component {
         this.setState({unpublishClicked: newVal, toUnpublish: id});
     }
 
+    async getProperty(id, set) {
+        let data = JSON.stringify({
+            id: id
+        });
+        axios.post("http://127.0.0.1:8080/getProperty", data,  {
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            withCredentials: true
+        }).then(response => {
+            var base64Flag = 'data:image/png;base64,';
+            var documents;
+            if(response.data.property.documents) {
+                documents = response.data.property.documents.map((document) =>
+                    base64Flag + document
+                )
+            }
+            var property = {
+                id: response.data.property._id, 
+                picture: base64Flag + response.data.property.picture,
+                owner: response.data.property.owner, 
+                description: response.data.property.description,
+                address: response.data.property.address, 
+                price: response.data.property.price, 
+                bedrooms: response.data.property.bedrooms,
+                bathrooms: response.data.property.bathrooms,
+                squareFootage: response.data.property.squareFootage,
+                yearBuilt: response.data.property.yearBuilt,
+                heating: response.data.property.heating,
+                cooling: response.data.property.cooling,
+                rent: response.data.property.rent, 
+                documents: documents
+            };
+            if(set === "VIEW")
+                this.setState({showView: true, viewProperty: property});
+            else if(set === "EDIT")
+                this.setState({editClicked: true, editProperty: property});
+        })
+        .catch(error => {
+            console.log("check login error", error);
+        });
+    }
+
+    async onViewClicked(property) {
+        this.getProperty(property.id, "VIEW");
+        this.setState({showView:true});
+    }
+
+    closeView() {
+        this.setState({showView: false, viewProperty: null})
+    }
+
     deleteProperty() {
+        if(this.state.hasDeleted.includes(this.state.toDelete)) {
+            this.setState((prevState) => ({
+                toDelete: null, 
+                deleteClicked: false,
+                okPopUp: true, 
+                popUpText: "Property already deleted, please refresh page",
+            }));
+            return;
+        }
         let data = JSON.stringify({
             id: this.state.toDelete,
             username: this.props.username
@@ -251,7 +337,13 @@ class Properties extends React.Component {
         }).then(response => {
             if(response.data.result) {
                 //this.props.rerender();
-                this.setState({toDelete: null, deleteClicked: false});
+                this.setState((prevState) => ({
+                    toDelete: null, 
+                    deleteClicked: false,
+                    okPopUp: true, 
+                    popUpText: "Property deleted, please refresh page",
+                    hasDeleted: [...prevState.hasDeleted, prevState.toDelete]
+                }));
             }
         })
         .catch(error => {
@@ -298,6 +390,10 @@ class Properties extends React.Component {
         if (!newVal) id = null;
         this.setState({unsaveClicked: newVal, toUnsave: id});
     }
+
+    okPopUpClicked() {
+        this.setState({okPopUp: false, popUpText: ""});
+    }
     
     
     render() {
@@ -305,26 +401,16 @@ class Properties extends React.Component {
         let myPropertiesList = this.props.properties.filter((property) =>
         property.owner == this.props.username
         ).map((property, index) => {
-            if(property.published) {
-                return <div key={index}><PropertyListItem 
-                    key={index} 
-                    property={property} 
-                    onView={this.onViewClicked}
-                    buttonText="Unpublish" 
-                    onButtonClicked={() => this.onUnpublishClicked(property.id)}
-                    deleteButton={true}
-                    deleteFunction={() => this.onDeleteClicked(property.id)}
-                /></div>
-            } else {
-                return <div key={index}><PropertyListItem 
-                    property={property} 
-                    onView={this.onViewClicked}
-                    buttonText="Publish" 
-                    onButtonClicked={() => this.onPublishClicked(property.id)}
-                    deleteButton={true}
-                    deleteFunction={() => this.onDeleteClicked(property.id)}
-                /></div>
-            }
+            return <div key={index}><PropertyListItem 
+                key={index} 
+                property={property} 
+                onView={this.onViewClicked}
+                buttonText="Edit" 
+                onButtonClicked={() => this.editClicked(property.id)}
+                deleteButton={true}
+                deleteFunction={() => this.onDeleteClicked(property.id)}
+                username={this.props.username}
+            /></div>
         });
 
         //filter for saved properties
@@ -337,37 +423,69 @@ class Properties extends React.Component {
                 property={property} 
                 onView={this.onViewClicked}
                 buttonText="Chat" 
-                onButtonClicked={this.openChat}
+                onButtonClicked={() => this.openChat(property.owner)}
                 deleteButton={true}
                 deleteFunction={() => this.onUnsaveClicked(property.id)}
             />
         );
 
+        //handles view screen
+        let propertyView;
+        if(this.state.showView) {
+            if(this.state.viewProperty) {
+                propertyView = <ViewProperty property={this.state.viewProperty} closeView={this.closeView}/>
+            } else {
+                propertyView = <div className="propertyView">
+                    <button className="closeView" onClick={this.closeView}>x</button>
+                    <ClipLoader
+                        loading={true}
+                        color="#010101"
+                        css="
+                            position absolute; 
+                            top: 50%;
+                            left: 50%;
+                            transform: translate(50%, 50%);
+                        "
+                    />
+                </div>
+            }
+        }
+
         //handle add screen
         let addScreen;
         if(this.state.addClicked) {
-            let documentsDiv = [];
-            for(let i = 0; i < this.state.numDocuments; i++) {
-                documentsDiv.push(
-                    <DocumentInput key={i} num ={i} document={this.state.documents[i]} onChange={this.onDocumentChange}/>
-                );
+            addScreen = <SubmitProperty
+                type="add"
+                addCloseClicked={this.addCloseClicked}
+                submitProperty = {this.submitProperty}
+            />
+        }
+
+        //handle edit screen
+        let editScreen;
+        if(this.state.editClicked) {
+            if(this.state.editProperty) {
+                editScreen = <SubmitProperty
+                    type="update"
+                    addCloseClicked={this.editCloseClicked}
+                    submitProperty = {this.editProperty}
+                    property = {this.state.editProperty}
+                />
+            } else {
+                editScreen = <div className="propertyView">
+                    <button className="closeView" onClick={this.editCloseClicked}>x</button>
+                    <ClipLoader
+                        loading={true}
+                        color="#010101"
+                        css="
+                            position absolute; 
+                            top: 50%;
+                            left: 50%;
+                            transform: translate(50%, 50%);
+                        "
+                    />
+                </div>
             }
-            addScreen = <div className="addScreen">
-                <button className="close" onClick={this.addCloseClicked}>x</button>
-                <div className="propertiesText">Picture</div>
-                <input className="propertiesPicture" type="file" onChange={this.onPictureChange} />
-                <div className="propertiesText">Address</div>
-                <input className="propertiesAddress" type="text" value={this.state.address} onChange={this.onAddressChange}/>
-                <div className="propertiesText">Price</div>
-                <input className="propertiesPrice" type="text" value={this.state.price} onChange={this.onPriceChange}/>
-                <div className="propertiesText">Monthly Rent</div>
-                <input className="propertiesRent" type="text" value={this.state.rent} onChange={this.onRentChange}/>
-                <div className="propertiesText">Other Documents (PNG, JPG, PDF)</div>
-                <button className="plus" onClick={this.addDocument}>+</button>
-                <button className="minus" onClick={this.removeDocument}>-</button>
-                {documentsDiv}
-                <button className="submitProperty" onClick={this.submitProperty}>Submit</button>
-            </div>
         }
 
         //handle popup
@@ -406,6 +524,12 @@ class Properties extends React.Component {
                 yesFunction={this.unpublishProperty}
                 noFunction={this.onUnpublishClicked}
             />
+        } else if(this.state.okPopUp) {
+            popUp = <PopUp
+                type="ok"
+                text={this.state.popUpText}
+                okFunction={this.okPopUpClicked}
+            />
         }
 
         return(
@@ -415,7 +539,9 @@ class Properties extends React.Component {
                 <div className='myPropertiesList'>{myPropertiesList}</div>
                 <div className="savedProperties">Saved Properties</div>
                 <div className='savedPropertiesList'>{savedPropertiesList}</div>
+                {propertyView}
                 {addScreen}
+                {editScreen}
                 {popUp}
             </div>
         );

@@ -1,0 +1,111 @@
+.submitPropertyComponent{
+    position: absolute;
+    background-color: #F4F4F4;
+    border-style: solid;
+    border-color: #ffd700;
+    border-width: 1px;
+    height: 80%;
+    width: 80%;
+    left: 100px;
+    top: 100px;
+    padding-left: 10px;
+    z-index: 1000;
+    border-radius: 10px;
+}
+
+.submitPropertyScrollable{
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    overflow: auto;
+}
+
+button.closeAdd{
+    position: absolute;
+    left: 0px;
+    top: 0px;
+}
+
+.submitPropertyTitle{
+    position: absolute;
+    left: 35%;
+    top: 10px;
+    color: #5E5E5E;
+    font-family: copperplate;
+    font-weight: 400;
+    font-size: 30px;
+    letter-spacing: 1px;
+}
+
+.addPictures{
+    position: absolute;
+    top: 30px;
+    width: 40%;
+    height: 90%;
+}
+
+.addTextFields{
+    position: absolute;
+    width: 60%;
+    height: 80%;
+    top: 60px;
+    left: 40%;
+    text-align: center;
+}
+
+.propertiesText{
+    font-family: copperplate;
+    font-size: 14px;
+    margin-top: 10px;
+    font-weight: 900;
+    color: #5E5E5E;
+}
+
+.propertiesPair{
+    position: relative;
+    display: inline-block;
+    margin: 30px;
+}
+
+.descriptionPair{
+    margin-top: 10px;
+}
+
+textarea.addDescription{
+    width: 80%;
+    resize: none;
+    border-radius: 15px;
+    border: 1px solid #AFAFAF;
+}
+
+input.propertiesPicture{
+    position: relative;
+    display: block;
+    color: black;
+}
+
+input.propertiesTextInput{
+    position: relative;
+    display: block;
+    border-radius: 15px;
+    border: 1px solid #AFAFAF;
+}
+
+input.document{
+    display: block;
+}
+
+.documentInput{
+    display: block;
+    color: black;
+}
+
+button.submitProperty{
+    position: absolute;
+    font-family: copperplate;
+    font-weight: 900;
+    left: 45%;
+    bottom: 10px;
+    background-color: #ffd700;
+    border: none;
+}

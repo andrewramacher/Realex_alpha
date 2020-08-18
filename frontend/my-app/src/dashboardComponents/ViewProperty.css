@@ -1,0 +1,135 @@
+.propertyView{
+    position: absolute;
+    background-color: #F4F4F4;
+    border-style: solid;
+    border-color: #ffd700;
+    border-width: 1px;
+    height: 80%;
+    width: 80%;
+    left: 100px;
+    top: 100px;
+    padding-left: 10px;
+    z-index: 1000;
+    border-radius: 10px;
+    color: #5E5E5E;
+}
+
+.viewPropertyScrollable{
+    position: relative;
+    top: 20px;
+    height: 90%;
+    width: 100%;
+    overflow: auto;
+}
+
+.viewPropertyAttributes{
+    position: relative;
+    top: 60%;
+    left: 5%;
+    height: 50%;
+    width: 90%;
+    text-align: center;
+}
+
+button.closeView{
+    position: absolute;
+    top: 0px;
+    left: 0px;
+}
+
+button.rightArrow{
+    position: absolute;
+    background-color: #F4F4F4;
+    border: 0px; 
+    border-radius: 0px;
+    color: #5E5E5E;
+    font-size: 30px;
+    height: 50px;
+    top: 115px;
+    right: 20%;
+}
+
+button.rightArrow:hover{
+    border: 1px solid #C4C4C4;   
+}
+
+button.leftArrow{
+    position: absolute;
+    background-color: #F4F4F4;
+    border-radius: 0px;
+    border: 0px; 
+    color: #5E5E5E;
+    font-size: 30px;
+    height: 50px;
+    top: 115px;
+    left: 20%;
+}
+
+button.leftArrow:hover{
+    border: 1px solid #C4C4C4;   
+}
+
+.viewPicture{
+    position: absolute;
+    top: 20px;
+    left: 50%;
+    transform: translate(-50%, 0);
+    height: 60%;
+    width: auto;
+    margin-bottom: 100px;
+}
+
+.viewPair{
+    position: relative;
+    display: inline-block;
+    margin: 50px;
+    border-radius: 15px;
+    background-color: white;
+    border: 1px solid #AFAFAF;
+    padding: 10px;
+}
+
+.viewAddressPair{
+    position: relative;
+    display: block;
+    width: 40%;
+    top: 65%;
+    margin: auto;
+    border-radius: 15px;
+    background-color: white;
+    border: 1px solid #AFAFAF;
+    padding: 10px;
+}
+
+.viewDescriptionPair{
+    position: relative;
+    display: block;
+    width: 60%;
+    top: 67%;
+    margin: auto;
+    word-wrap: break-word;
+}
+
+.viewAddress{
+    display: inline-block;
+}
+
+.viewAddressData{
+    position: relative;
+    display: block;
+    margin: auto;
+    text-align: center;
+}
+
+.viewTextDescription{
+    margin-top: 10px;
+}
+
+.viewText{
+    margin-top: 10px;
+}
+
+.viewTextData{
+    position: relative;
+    text-align: center;
+}
