@@ -4,6 +4,7 @@ import SubmitProperty from './SubmitProperty';
 import ViewProperty from './ViewProperty';
 import PopUp from '.././PopUp';
 import ClipLoader from "react-spinners/ClipLoader";
+import imageCompression from 'browser-image-compression';
 
 import axios from 'axios';
 import './Properties.css';
@@ -77,7 +78,7 @@ class Properties extends React.Component {
     }
 
 
-    submitProperty(property) {
+    async submitProperty(property) {
         //id picture owner address price rent cap published
         // let data = JSON.stringify({
         //     picture: this.state.picture,
@@ -90,8 +91,33 @@ class Properties extends React.Component {
             alert("Picture, Address, and Price cannot be empty");
             return;
         }
+        //make picture smaller
+        const imageFile = property.picture;
+        var compressedFile;
+        var compressedSmall;
+        const options = {
+            maxSizeMB: 1,
+            maxWidthOrHeight: 485,
+            useWebWorker: true
+        }
+        const optionsSmall = {
+            maxSizeMB: 1,
+            maxWidthOrHeight: 135,
+            useWebWorker: true
+        }
+        try {
+            compressedFile = await imageCompression(imageFile, options);
+            compressedSmall = await imageCompression(imageFile, optionsSmall);
+        
+        } catch (error) {
+            console.log(error);
+        }
+
+
+
         let formData = new FormData();
-        formData.append('picture', property.picture, 'Picture.png');
+        formData.append('picture', compressedFile, 'Picture.png');
+        formData.append('pictureSmall', compressedSmall, 'PictureSmall.png');
         formData.append('description', property.description);
         formData.append('address', property.address);
         formData.append('bedrooms', property.bedrooms);
@@ -103,11 +129,12 @@ class Properties extends React.Component {
         formData.append('price', property.price);
         formData.append('rent', property.rent);
         formData.append('owner', this.props.username);
-        property.documents.map((document, index) => 
+        property.documents.map(async (document, index) => {
+            //documents already compressed in DocumentInput.js
             formData.append('documents', document, 'Document' + index + '.png')
-        );
+        });
         
-        axios.post('https://www.realexinvest.com:8443/addProperty', formData, {
+        axios.post('http://127.0.0.1:8080/addProperty', formData, {
             headers: {
               'Content-Type': 'multipart/form-data'
             },
@@ -158,7 +185,7 @@ class Properties extends React.Component {
             formData.append('documents', document, 'Document' + index + '.png')
         );
         
-        axios.post('https://www.realexinvest.com:8443/editProperty', formData, {
+        axios.post('http://127.0.0.1:8080/editProperty', formData, {
             headers: {
               'Content-Type': 'multipart/form-data'
             },
@@ -186,6 +213,7 @@ class Properties extends React.Component {
     }
 
     publishProperty() {
+        
         //Check to see if user can publish property
         if(this.props.user.numPublished >= this.props.user.canPublish) {
             this.setState({maxPublished: true, publishClicked: false, toPublish: null});
@@ -195,12 +223,13 @@ class Properties extends React.Component {
             id: this.state.toPublish,
             username: this.props.username
         });
-        axios.post("https://www.realexinvest.com:8443/publishProperty", data,  {
+        axios.post("http://127.0.0.1:8080/publishProperty", data,  {
             headers: {
               'Content-Type': 'application/json',
             },
             withCredentials: true
         }).then(response => {
+            alert("ASDFASFASDFASDFA");
             //Make sure there isn't a way to cheat the system by bybassing local count
 
             // if(response.data.result) {
@@ -234,7 +263,7 @@ class Properties extends React.Component {
             id: this.state.toUnpublish,
             username: this.props.username
         });
-        axios.post("https://www.realexinvest.com:8443/unpublishProperty", data,  {
+        axios.post("http://127.0.0.1:8080/unpublishProperty", data,  {
             headers: {
               'Content-Type': 'application/json',
             },
@@ -267,7 +296,7 @@ class Properties extends React.Component {
         let data = JSON.stringify({
             id: id
         });
-        axios.post("https://www.realexinvest.com:8443/getProperty", data,  {
+        axios.post("http://127.0.0.1:8080/getProperty", data,  {
             headers: {
               'Content-Type': 'application/json',
             },
@@ -329,7 +358,7 @@ class Properties extends React.Component {
             id: this.state.toDelete,
             username: this.props.username
         });
-        axios.post("https://www.realexinvest.com:8443/deleteProperty", data,  {
+        axios.post("http://127.0.0.1:8080/deleteProperty", data,  {
             headers: {
               'Content-Type': 'application/json',
             },
@@ -363,7 +392,7 @@ class Properties extends React.Component {
             id: this.state.toUnsave,
             username: this.props.username
         });
-        axios.post("https://www.realexinvest.com:8443/unsaveProperty", data,  {
+        axios.post("http://127.0.0.1:8080/unsaveProperty", data,  {
             headers: {
               'Content-Type': 'application/json',
             },

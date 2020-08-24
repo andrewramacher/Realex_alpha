@@ -41,7 +41,7 @@ class Browse extends React.Component {
         let data = JSON.stringify({
             id: id
         });
-        axios.post("https://www.realexinvest.com:8443/getProperty", data,  {
+        axios.post("http://127.0.0.1:8080/getProperty", data,  {
             headers: {
               'Content-Type': 'application/json',
             },
@@ -145,7 +145,7 @@ class Browse extends React.Component {
         }
         return(
             <div>
-                <img className="search" src={searchGlass} alt="search"/>
+                {/* <img className="search" src={searchGlass} alt="search"/>
                 <input className="search" type="text" value={this.state.search} onChange={this.handleChangeSearch}/>
                 <div className="sortBy">Sort By:</div>
                 <select 
@@ -154,10 +154,10 @@ class Browse extends React.Component {
                     onChange={this.handleChangeDropdown} 
                 >
                     <option value="Age">Age</option>
-                    {/* <option value="Price">Price</option>
+                    <option value="Price">Price</option>
                     <option value="New">New</option>
-                    <option value="Cap Rate">Cap Rate</option> */}
-                </select>  
+                    <option value="Cap Rate">Cap Rate</option>
+                </select>   */}
                 <div className="propertiesList">{propertiesList}</div>  
                 {propertyView}
                 {popUp}   

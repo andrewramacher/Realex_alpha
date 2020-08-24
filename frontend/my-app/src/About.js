@@ -23,7 +23,8 @@ class About extends React.Component {
                     <li>Save properties</li>
                     <li>Chat with owners</li>
                     <li>Click "Ready to Transact"</li>
-                    <li>We guide you through buying process (title and escrow)</li>
+                    <li>We guide you through buying process (title, escrow, and mortgage)</li>
+                    <li>You pay us nothing</li>
                 </ol>
                 <br/>
                 Selling:
@@ -32,7 +33,8 @@ class About extends React.Component {
                     <li>Contact us to publish</li>
                     <li>Get messages</li>
                     <li>Click "Ready to Transact"</li>
-                    <li>We guide you through selling process (title and escrow)</li>
+                    <li>We guide you through selling process (title, escrow, and mortgage)</li>
+                    <li>You pay us nothing</li>
                 </ol>
                 <br/>
             </div>

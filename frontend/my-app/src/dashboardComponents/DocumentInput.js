@@ -1,4 +1,5 @@
 import React from 'react';
+import imageCompression from 'browser-image-compression';
 
 class DocumentInput extends React.Component {
     constructor(props) {
@@ -12,9 +13,21 @@ class DocumentInput extends React.Component {
     }
     
 
-    onDocumentChange(event) {
-        this.props.onChange(event.target.files[0], this.state.num);
-        this.setState({document: event.target.files[0]});
+    async onDocumentChange(event) {
+        var compressedFile;
+        const options = {
+            maxSizeMB: 1,
+            maxWidthOrHeight: 485,
+            useWebWorker: true
+        }
+        try {
+            compressedFile = await imageCompression(event.target.files[0], options);
+        
+        } catch (error) {
+            console.log(error);
+        }
+        this.props.onChange(compressedFile, this.state.num);
+        this.setState({document: compressedFile});
     } 
     
     render() {

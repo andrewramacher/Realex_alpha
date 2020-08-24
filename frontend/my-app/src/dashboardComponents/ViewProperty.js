@@ -56,7 +56,7 @@ class ViewProperty extends React.Component {
                         {leftArrow}
                         {picture}
                         {rightArrow}
-                        <div className="viewAddressPair">
+                        <div className="viewAddress">
                             <div className="viewAddressData">{this.state.property.address}</div>
                         </div>
                         <div className="viewDescriptionPair">
@@ -95,6 +95,7 @@ class ViewProperty extends React.Component {
                                 <div className="viewText">Cooling: </div>
                                 <div className="viewTextData">{this.state.property.cooling}</div>
                             </div>
+                            <div className="hiddenBottomAttributes"></div>
                         </div>
                     </div>
             </div>

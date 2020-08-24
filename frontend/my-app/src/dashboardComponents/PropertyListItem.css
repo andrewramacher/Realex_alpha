@@ -11,6 +11,12 @@
     color: #010101;
     background-color: #E4E4E4;
     border: 5px solid #E4E4E4;
+    /* background-color: white;
+    font-family: copperplate;
+    font-weight: 100;
+    letter-spacing: 1px;
+    color: #010101;
+    border: 2px solid #E4E4E4; */
     border-radius: 10px;
 }
 
@@ -26,10 +32,10 @@ img.picture{
     position: relative;
     display: inline-block;
     overflow: hidden;
-    height:35px;
+    height: 39px;
     width: 80%;
     min-width: 315px;
-    top: -35px;
+    top: -30px;
 }
 
 .textField{
