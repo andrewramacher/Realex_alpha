@@ -315,7 +315,7 @@ app.post('/getProperties', function(req, res){
                 return new Promise((resolve, reject) => {
                     db.collection("Properties", (err, collection) => {
                         if (err) throw err;
-                        var cursor = collection.find({"$or": [{"owner": username}, {"published": true}]}, {projection:{documents:0}});//Cut out documents
+                        var cursor = collection.find({"$or": [{"owner": username}, {"published": true}]}, {projection:{documents:0, picture: 0}});//Cut out documents
                         var properties = [];
                         cursor.each(function(err, item) {
                             // If the item is null then the cursor is exhausted/empty and closed
@@ -324,7 +324,6 @@ app.post('/getProperties', function(req, res){
                                 return;
                             }
                             // otherwise, do something with the item
-                            item.cap = item.price / item.rent;
                             properties.push(item);
                         });
                     })
@@ -767,7 +766,7 @@ app.post('/unsaveProperty', function(req, res){
 
 
 // Add property to Mongo
-var cpUpload = upload.fields([{ name: 'picture', maxCount: 1 }, { name: 'documents', maxCount: 8 }])
+var cpUpload = upload.fields([{ name: 'picture', maxCount: 1 }, { name: 'pictureSmall', maxCount: 1 }, { name: 'documents', maxCount: 8 }])
 app.post('/addProperty', cpUpload, function(req, res){
     var documents = [];
     if(req.files['documents']){
@@ -777,6 +776,7 @@ app.post('/addProperty', cpUpload, function(req, res){
     }
     var property = {
         picture: fs.readFileSync(req.files['picture'][0].path),
+        pictureSmall: fs.readFileSync(req.files['pictureSmall'][0].path),
         description: req.body.description,
         address: req.body.address,
         bedrooms: req.body.bedrooms,
