@@ -587,7 +587,7 @@ class Properties extends React.Component {
         }
 
         return(
-            <div className="propertiesTab" onClick={this.closeView}>
+            <div className="propertiesTabMobile" onClick={this.closeView}>
                 <div className="myProperties">Owned Properties</div>
                 <button className="add" onClick={(e) => this.addClicked(e)}>Add</button>
                 <div className='myPropertiesList'>{myPropertiesList}</div>

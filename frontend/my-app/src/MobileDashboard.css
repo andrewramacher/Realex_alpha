@@ -1,8 +1,8 @@
-.Dashboard {
+.MobileDashboard {
+    position: relative;
     background-color: white;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
+    width: 100%;
+    height: 800px;
     align-items: center;
     justify-content: center;
     font-size: calc(10px + 2vmin);
@@ -19,31 +19,25 @@ button{
     border-radius: 5px;
 }
 
-.topBar{
+.topBarMobile{
     position: absolute;
     top: 0px;
     left: 0px;
-    height: 80px;
+    height: 10%;
     width: 100%;
     background-color: #010101;
 }
 
-img.dashboardPlant{
+img.dashboardPlantMobile{
     position: absolute;
-    top: 0px;
-    left: 10px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    height: 100%;
+    width: auto;
 }
 
-.dashboardRealExpress{
-    position: absolute;
-    top: 20px;
-    left: 125px;
-    color: #ffd700;
-    font-family: copperplate;
-    font-weight: 400;
-    font-size: 40px;
-    letter-spacing: 1px;
-}
+
 
 .middleBar{
     position: absolute;
@@ -210,14 +204,15 @@ button.aboutClicked {
     left: 15px;
 }
 
-button.accountButton {
+button.accountButtonMobile {
     position: absolute;
     display: block;
     font-family: copperplate;
     font-size: 18px;
-    margin-top: 10px;
-    top: 20px;
-    right: 35px;
+    height: 50%;
+    right: 5px;
+    top: 50%;
+    transform: translate(0%, -50%);
     font-weight: 900;
     color: #ffd700;
     background-color: #010101;

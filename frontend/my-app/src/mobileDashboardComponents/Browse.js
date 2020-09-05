@@ -160,7 +160,7 @@ class Browse extends React.Component {
                     <option value="New">New</option>
                     <option value="Cap Rate">Cap Rate</option>
                 </select>   */}
-                <div className="propertiesList">{propertiesList}</div>  
+                <div className="propertiesListMobile">{propertiesList}</div>  
                 {propertyView}
                 {popUp}   
             </div>
