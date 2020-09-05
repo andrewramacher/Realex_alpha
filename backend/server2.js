@@ -822,10 +822,11 @@ app.post('/addProperty', cpUpload, function(req, res){
 });
 
 // Edit property in Mongo
-var cpUpload = upload.fields([{ name: 'picture', maxCount: 1 }, { name: 'documents', maxCount: 8 }])
+var cpUpload = upload.fields([{ name: 'picture', maxCount: 1 }, { name: 'pictureSmall', maxCount: 1 }, { name: 'documents', maxCount: 8 }])
 app.post('/editProperty', cpUpload, function(req, res){
     var id = req.body.id;
     var picture = fs.readFileSync(req.files['picture'][0].path);
+    var pictureSmall = fs.readFileSync(req.files['pictureSmall'][0].path);
     var description = req.body.description;
     var address = req.body.address;
     var bedrooms = req.body.bedrooms;
@@ -856,6 +857,7 @@ app.post('/editProperty', cpUpload, function(req, res){
                             {_id:ObjectID(id)},
                             [
                                 {"$set": {"picture": picture}},
+                                {"$set": {"pictureSmall": pictureSmall}},
                                 {"$set": {"description": description}},
                                 {"$set": {"address": address}},
                                 {"$set": {"bedrooms": bedrooms}},
