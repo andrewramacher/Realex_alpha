@@ -135,7 +135,7 @@ class Properties extends React.Component {
             formData.append('documents', document, 'Document' + index + '.png')
         });
         
-        axios.post('https://www.realexinvest.com:8443/addProperty', formData, {
+        axios.post('http://127.0.0.1:8080/addProperty', formData, {
             headers: {
               'Content-Type': 'multipart/form-data'
             },
@@ -210,7 +210,7 @@ class Properties extends React.Component {
             formData.append('documents', document, 'Document' + index + '.png')
         );
         
-        axios.post('https://www.realexinvest.com:8443/editProperty', formData, {
+        axios.post('http://127.0.0.1:8080/editProperty', formData, {
             headers: {
               'Content-Type': 'multipart/form-data'
             },
@@ -248,7 +248,7 @@ class Properties extends React.Component {
             id: this.state.toPublish,
             username: this.props.username
         });
-        axios.post("https://www.realexinvest.com:8443/publishProperty", data,  {
+        axios.post("http://127.0.0.1:8080/publishProperty", data,  {
             headers: {
               'Content-Type': 'application/json',
             },
@@ -288,7 +288,7 @@ class Properties extends React.Component {
             id: this.state.toUnpublish,
             username: this.props.username
         });
-        axios.post("https://www.realexinvest.com:8443/unpublishProperty", data,  {
+        axios.post("http://127.0.0.1:8080/unpublishProperty", data,  {
             headers: {
               'Content-Type': 'application/json',
             },
@@ -321,7 +321,7 @@ class Properties extends React.Component {
         let data = JSON.stringify({
             id: id
         });
-        axios.post("https://www.realexinvest.com:8443/getProperty", data,  {
+        axios.post("http://127.0.0.1:8080/getProperty", data,  {
             headers: {
               'Content-Type': 'application/json',
             },
@@ -383,7 +383,7 @@ class Properties extends React.Component {
             id: this.state.toDelete,
             username: this.props.username
         });
-        axios.post("https://www.realexinvest.com:8443/deleteProperty", data,  {
+        axios.post("http://127.0.0.1:8080/deleteProperty", data,  {
             headers: {
               'Content-Type': 'application/json',
             },
@@ -417,7 +417,7 @@ class Properties extends React.Component {
             id: this.state.toUnsave,
             username: this.props.username
         });
-        axios.post("https://www.realexinvest.com:8443/unsaveProperty", data,  {
+        axios.post("http://127.0.0.1:8080/unsaveProperty", data,  {
             headers: {
               'Content-Type': 'application/json',
             },

@@ -41,7 +41,7 @@ class Browse extends React.Component {
         let data = JSON.stringify({
             id: id
         });
-        axios.post("https://www.realexinvest.com:8443/getProperty", data,  {
+        axios.post("http://127.0.0.1:8080/getProperty", data,  {
             headers: {
               'Content-Type': 'application/json',
             },
@@ -106,7 +106,7 @@ class Browse extends React.Component {
             if(this.state.viewProperty) {
                 propertyView = <ViewProperty property={this.state.viewProperty} closeView={this.closeView}/>
             } else {
-                propertyView = <div className="propertyView">
+                propertyView = <div className="propertyViewMobile">
                     <button className="closeView" onClick={this.closeView}>x</button>
                     <ClipLoader
                         loading={true}

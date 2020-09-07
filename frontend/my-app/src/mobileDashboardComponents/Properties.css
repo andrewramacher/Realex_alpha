@@ -33,10 +33,10 @@
     color: #F3BF01;
 }
 
-button.add{
+button.addMobile{
     position: absolute;
     display: inline-block;
-    right: 150px;
+    right: 10%;
     top: 20px;
     font-family: copperplate;
     font-size: 18px;

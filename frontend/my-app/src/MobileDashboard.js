@@ -52,13 +52,13 @@ class MobileDashboard extends React.Component {
     }
 
     checkLoginStatus() {
-        axios.get("https://www.realexinvest.com:8443/login", { withCredentials: true })
+        axios.get("http://127.0.0.1:8080/login", { withCredentials: true })
         .then(response => {
             if (this._isMounted && response.data.logged_in) {
                 let data = JSON.stringify({
                     user: response.data.username
                 });
-                axios.post("https://www.realexinvest.com:8443/getUser", data,  {
+                axios.post("http://127.0.0.1:8080/getUser", data,  {
                     headers: {
                     'Content-Type': 'application/json',
                     },
@@ -118,7 +118,7 @@ class MobileDashboard extends React.Component {
         let data = JSON.stringify({
             username: username
         });
-        axios.post("https://www.realexinvest.com:8443/getProperties", data, {
+        axios.post("http://127.0.0.1:8080/getProperties", data, {
             headers: {
                 'Content-Type': 'application/json',
               },
@@ -147,7 +147,7 @@ class MobileDashboard extends React.Component {
         let data = JSON.stringify({
             username: username
         });
-        axios.post("https://www.realexinvest.com:8443/messages", data, {
+        axios.post("http://127.0.0.1:8080/messages", data, {
             headers: {
               'Content-Type': 'application/json',
             },
@@ -184,7 +184,7 @@ class MobileDashboard extends React.Component {
             text: text,
             date: date
         };
-        axios.post('https://www.realexinvest.com:8443/sendMessage', JSON.stringify(message), {
+        axios.post('http://127.0.0.1:8080/sendMessage', JSON.stringify(message), {
             headers: {
                 'Content-Type': 'application/json',
             },
@@ -225,7 +225,7 @@ class MobileDashboard extends React.Component {
             username: this.state.username
         });
         
-        axios.post('https://www.realexinvest.com:8443/save', data, {
+        axios.post('http://127.0.0.1:8080/save', data, {
             headers: {
               'Content-Type': 'application/json',
             },
@@ -311,7 +311,7 @@ class MobileDashboard extends React.Component {
             username: "",
             password: ""
         });
-        axios.post('https://www.realexinvest.com:8443/login', data, {
+        axios.post('http://127.0.0.1:8080/login', data, {
             headers: {
               'Content-Type': 'application/json',
             },

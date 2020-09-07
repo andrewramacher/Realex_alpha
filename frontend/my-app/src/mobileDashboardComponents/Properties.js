@@ -135,7 +135,7 @@ class Properties extends React.Component {
             formData.append('documents', document, 'Document' + index + '.png')
         });
         
-        axios.post('https://www.realexinvest.com:8443/addProperty', formData, {
+        axios.post('http://127.0.0.1:8080/addProperty', formData, {
             headers: {
               'Content-Type': 'multipart/form-data'
             },
@@ -210,7 +210,7 @@ class Properties extends React.Component {
             formData.append('documents', document, 'Document' + index + '.png')
         );
         
-        axios.post('https://www.realexinvest.com:8443/editProperty', formData, {
+        axios.post('http://127.0.0.1:8080/editProperty', formData, {
             headers: {
               'Content-Type': 'multipart/form-data'
             },
@@ -248,7 +248,7 @@ class Properties extends React.Component {
             id: this.state.toPublish,
             username: this.props.username
         });
-        axios.post("https://www.realexinvest.com:8443/publishProperty", data,  {
+        axios.post("http://127.0.0.1:8080/publishProperty", data,  {
             headers: {
               'Content-Type': 'application/json',
             },
@@ -288,7 +288,7 @@ class Properties extends React.Component {
             id: this.state.toUnpublish,
             username: this.props.username
         });
-        axios.post("https://www.realexinvest.com:8443/unpublishProperty", data,  {
+        axios.post("http://127.0.0.1:8080/unpublishProperty", data,  {
             headers: {
               'Content-Type': 'application/json',
             },
@@ -321,7 +321,7 @@ class Properties extends React.Component {
         let data = JSON.stringify({
             id: id
         });
-        axios.post("https://www.realexinvest.com:8443/getProperty", data,  {
+        axios.post("http://127.0.0.1:8080/getProperty", data,  {
             headers: {
               'Content-Type': 'application/json',
             },
@@ -383,7 +383,7 @@ class Properties extends React.Component {
             id: this.state.toDelete,
             username: this.props.username
         });
-        axios.post("https://www.realexinvest.com:8443/deleteProperty", data,  {
+        axios.post("http://127.0.0.1:8080/deleteProperty", data,  {
             headers: {
               'Content-Type': 'application/json',
             },
@@ -417,7 +417,7 @@ class Properties extends React.Component {
             id: this.state.toUnsave,
             username: this.props.username
         });
-        axios.post("https://www.realexinvest.com:8443/unsaveProperty", data,  {
+        axios.post("http://127.0.0.1:8080/unsaveProperty", data,  {
             headers: {
               'Content-Type': 'application/json',
             },
@@ -489,7 +489,7 @@ class Properties extends React.Component {
             if(this.state.viewProperty) {
                 propertyView = <ViewProperty property={this.state.viewProperty} closeView={this.closeView}/>
             } else {
-                propertyView = <div className="propertyView">
+                propertyView = <div className="propertyViewMobile">
                     <button className="closeView" onClick={this.closeView}>x</button>
                     <ClipLoader
                         loading={true}
@@ -526,7 +526,7 @@ class Properties extends React.Component {
                     property = {this.state.editProperty}
                 />
             } else {
-                editScreen = <div className="propertyView">
+                editScreen = <div className="propertyViewMobile">
                     <button className="closeView" onClick={this.editCloseClicked}>x</button>
                     <ClipLoader
                         loading={true}
@@ -589,7 +589,7 @@ class Properties extends React.Component {
         return(
             <div className="propertiesTabMobile" onClick={this.closeView}>
                 <div className="myProperties">Owned Properties</div>
-                <button className="add" onClick={(e) => this.addClicked(e)}>Add</button>
+                <button className="addMobile" onClick={(e) => this.addClicked(e)}>Add</button>
                 <div className='myPropertiesList'>{myPropertiesList}</div>
                 <div className="savedProperties">Saved Properties</div>
                 <div className='savedPropertiesList'>{savedPropertiesList}</div>

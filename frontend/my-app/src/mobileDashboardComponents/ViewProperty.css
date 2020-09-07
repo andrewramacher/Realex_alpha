@@ -1,4 +1,4 @@
-.propertyView{
+.propertyViewMobile{
     position: absolute;
     background-color: #F4F4F4;
     border-style: solid;
@@ -7,7 +7,7 @@
     box-shadow: 0 0 10px #333;
     height: 100%;
     width: 80%;
-    left: 100px;
+    left: 8%;
     top: 20px;
     padding-left: 10px;
     z-index: 1000;

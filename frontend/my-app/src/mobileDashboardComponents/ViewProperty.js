@@ -54,7 +54,7 @@ class ViewProperty extends React.Component {
             rightArrow = <button className="rightArrow" onClick={this.incDoc}>></button>
         }
         return(
-            <div className="propertyView" onClick={(e) => this.viewPropertyClicked(e)}>
+            <div className="propertyViewMobile" onClick={(e) => this.viewPropertyClicked(e)}>
                     <button className="closeView" onClick={this.props.closeView}>x</button>
                     <div className="viewPropertyScrollable">
                         {leftArrow}

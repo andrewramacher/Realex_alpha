@@ -217,7 +217,7 @@ class SubmitProperty extends React.Component {
         }
 
         return(
-            <div className="submitPropertyComponent" onClick={(e) => this.onSubmitPropertyClicked(e)}>
+            <div className="submitPropertyComponentMobile" onClick={(e) => this.onSubmitPropertyClicked(e)}>
                 <div className="submitPropertyScrollable">
                     {title}
                     <div className="addPictures">
