@@ -57,10 +57,3 @@ input.search {
 .propertiesList:hover{
     border: 1px solid #ffd700;
 }
-
-.propertyView{
-    position: absolute;
-    background-color: #010101;
-    height: 400px;
-    width: 400px;
-}

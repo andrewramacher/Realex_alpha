@@ -59,6 +59,16 @@ class PropertyListItem extends React.Component {
         if(this.props.deleteButton) {
             deleteButton = <button className="deletePropertyButton" onClick={(e) => {this.onDeleteClicked(e)}}>x</button>
         }
+
+        //handle buttons showing if not signed in
+        let buttons;
+        if(this.state.username) {
+            buttons = <div className='buttons'>
+                <button className='view' onClick={this.onViewClicked}>View</button>
+                <button className='other' onClick={(e) => {this.onOtherClicked(e, this.state.property)}}>{this.state.buttonText}</button>
+            </div>
+        }
+
         return(
             <div className='propertyListItem' onClick={(e) => this.onViewClicked(e)}>
                 <img className='picture' src={this.state.property.picture}/>
@@ -76,10 +86,7 @@ class PropertyListItem extends React.Component {
                         <div>{this.state.property.rent}</div>
                     </div>
                    {owner}
-                </div>
-                <div className='buttons'>
-                    <button className='view' onClick={this.onViewClicked}>View</button>
-                    <button className='other' onClick={(e) => {this.onOtherClicked(e, this.state.property)}}>{this.state.buttonText}</button>
+                   {buttons}
                 </div>
                 {deleteButton}
             </div>
