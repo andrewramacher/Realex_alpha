@@ -34,13 +34,6 @@ input.search {
     left: 280px;
 }
 
-.dropdown {
-    position: absolute;
-    display: block;
-    top: 160px;
-    left: 370px;
-}
-
 .propertiesList{
     position: absolute;
     display: block;
@@ -49,7 +42,6 @@ input.search {
     left: 30px;
     height: 475px;
     width: 90%;
-    min-width: 745px;
     overflow-y:auto;
     border-radius: 5px;
 }

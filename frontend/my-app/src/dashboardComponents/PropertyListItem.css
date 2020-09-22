@@ -19,6 +19,7 @@
     color: #010101;
     border: 2px solid #E4E4E4; */
     border-radius: 10px;
+    overflow: hidden;
 }
 
 img.picture{
@@ -38,27 +39,27 @@ img.picture{
     text-align: top;
 }
 
-.textFieldAddress{
+.textFieldPrice{
     position: absolute;
     display: inline-block;
     vertical-align: top;
     left: 50px;
     top: 55%;
     transform: translate(0%, -50%);
-    overflow: scroll;
     width: 150px;
+    height: auto;
     word-wrap: break-word;
 }
 
-.textFieldPrice{
+.textFieldAddress{
     position: absolute;
     display: inline-block;
     vertical-align: top;
-    left: 250px;
+    left: 200px;
     top: 55%;
     transform: translate(0%, -50%);
+    overflow: scroll;
     width: 150px;
-    height: auto;
     word-wrap: break-word;
 }
 

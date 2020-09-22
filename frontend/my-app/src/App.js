@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import Dashboard from './Dashboard';
-import MobileDashboard from './MobileDashboard';
 import Home from './Home';
 import MediaQuery from 'react-responsive';
 import {
@@ -56,7 +55,7 @@ class App extends React.Component {
               <Dashboard/>
             </MediaQuery>
             <MediaQuery query='(max-device-width: 1224px)'>
-              <MobileDashboard/>
+              <Dashboard/>
             </MediaQuery>
           </Route>
       </Switch>

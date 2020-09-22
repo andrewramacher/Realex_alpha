@@ -54,6 +54,26 @@ img.dashboardPlant{
   background-color: #E4E4E4;
 }
 
+.dropdown {
+  width: 120px;
+  top: 0px;
+  left: 0px;
+  border-radius: 0px;
+  border-color: white;
+  font-family: copperplate;
+  outline: none;
+  background: white;
+}
+
+.dropdownDiv {
+  position: absolute;
+  top: 87px;
+  left: 45%;
+  height: 30px;
+  width: 100px;
+  overflow: hidden;
+}
+
 button.browse {
   position: absolute;
   display: block;

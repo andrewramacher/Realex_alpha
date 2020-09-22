@@ -73,13 +73,13 @@ class PropertyListItem extends React.Component {
             <div className='propertyListItem' onClick={(e) => this.onViewClicked(e)}>
                 <img className='picture' src={this.state.property.picture}/>
                 <div className="fields">
-                    <div className='textFieldAddress'>
-                        <div>Address:</div>
-                        <div>{this.state.property.address}</div>
-                    </div>
                     <div className='textFieldPrice'>
                         <div>Price:</div>
                         <div>{this.state.property.price}</div>
+                    </div>
+                    <div className='textFieldAddress'>
+                        <div>Address:</div>
+                        <div>{this.state.property.address}</div>
                     </div>
                     <div className='textFieldRent'>
                         <div>Rent:</div>

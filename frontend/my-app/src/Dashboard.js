@@ -7,6 +7,7 @@ import About from './About';
 import Properties from './dashboardComponents/Properties';
 import p_logo from './images/Elegant.png';
 import ClipLoader from "react-spinners/ClipLoader";
+import MediaQuery from 'react-responsive';
 import {
     Redirect
 } from "react-router-dom";
@@ -35,6 +36,7 @@ class Dashboard extends React.Component {
         this.openChat = this.openChat.bind(this);
         this.properties = this.properties.bind(this); //handles properties button click
         this.aboutClicked = this.aboutClicked.bind(this);
+        this.handleChangeDropdown = this.handleChangeDropdown.bind(this);
         this.makeStruct = this.makeStruct.bind(this);
         this.getProperties = this.getProperties.bind(this);
         this.saveProperty = this.saveProperty.bind(this);
@@ -301,6 +303,10 @@ class Dashboard extends React.Component {
         });
     }
 
+    handleChangeDropdown(event) {
+        this.setState({clicked: event.target.value});
+    }
+
     signOut() {
         let data = JSON.stringify({
             type: "signOut",
@@ -405,14 +411,34 @@ class Dashboard extends React.Component {
           <div className="Dashboard">
             <div className="topBar">
                 <img className="dashboardPlant" height={72} width={108} src={p_logo} alt="P_logo"/>
-                <div className="dashboardRealExpress">Real Express</div>
+                <MediaQuery query='(min-device-width: 1224px)'>
+                    <div className="dashboardRealExpress">Real Express</div>
+                </MediaQuery>
             </div>
-            <div className="middleBar">
-                {browseButton}
-                {chatButton}
-                {propertiesButton}
-                {aboutButton}
-            </div>
+            <MediaQuery query='(min-device-width: 1224px)'>
+                <div className="middleBar">
+                    {browseButton}
+                    {chatButton}
+                    {propertiesButton}
+                    {aboutButton}
+                </div>
+            </MediaQuery>
+            <MediaQuery query='(max-device-width: 1224px)'>
+                <div className="middleBar">
+                </div>
+                <div className="dropdownDiv">
+                    <select 
+                        className="dropdown"
+                        value={this.state.clicked} 
+                        onChange={this.handleChangeDropdown} 
+                    >
+                        <option value="BROWSE">Browse</option>
+                        <option value="CHAT">Chat</option>
+                        <option value="PROPERTIES">Properties</option>
+                        <option value="ABOUT">About</option>
+                    </select>
+                </div>
+            </MediaQuery>
             <button className="accountButton" onClick={this.onShowAccountScreen}>{this.state.username}</button>
             {shown}
             {accountScreen}
