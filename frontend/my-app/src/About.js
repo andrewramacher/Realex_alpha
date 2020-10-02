@@ -22,6 +22,7 @@ class About extends React.Component {
                     <li>Browse properties</li>
                     <li>Save properties</li>
                     <li>Chat with owners</li>
+                    <li>If owner is Admin contact info in description</li>
                     <li>Click "Ready to Transact"</li>
                     <li>We guide you through buying process (title, escrow, and mortgage)</li>
                     <li>You pay us nothing</li>

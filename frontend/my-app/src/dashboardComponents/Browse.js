@@ -133,6 +133,7 @@ class Browse extends React.Component {
                 onView={this.onViewClicked} 
                 buttonText="Save" 
                 onButtonClicked={this.onSaveClicked}
+                username={this.props.username}
             />;
         });
 

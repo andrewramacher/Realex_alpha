@@ -379,7 +379,7 @@ class Dashboard extends React.Component {
         let propertiesButton = <button className="properties" onClick={this.properties}>Properties</button>;
         let aboutButton = <button className="about" onClick={this.aboutClicked}>About</button>;
         if(this.state.clicked == "BROWSE") {
-            shown = <Browse properties={this.state.properties} saveProperty={this.saveProperty}/>;
+            shown = <Browse properties={this.state.properties} saveProperty={this.saveProperty} username={this.state.username}/>;
             browseButton = <button className="browseClicked">Browse</button>;
         } else if(this.state.clicked == "CHAT") {
             shown = <Chat 
@@ -437,7 +437,7 @@ class Dashboard extends React.Component {
                         <option value="PROPERTIES">Properties</option>
                         <option value="ABOUT">About</option>
                     </select>
-                </div>
+                </div>username={this.props.username}
             </MediaQuery>
             <button className="accountButton" onClick={this.onShowAccountScreen}>{this.state.username}</button>
             {shown}

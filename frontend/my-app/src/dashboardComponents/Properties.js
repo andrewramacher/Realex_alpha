@@ -480,6 +480,7 @@ class Properties extends React.Component {
                 onButtonClicked={() => this.openChat(property.owner)}
                 deleteButton={true}
                 deleteFunction={() => this.onUnsaveClicked(property.id)}
+                username={this.props.username}
             />
         );
 

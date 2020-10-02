@@ -60,13 +60,20 @@ class PropertyListItem extends React.Component {
             deleteButton = <button className="deletePropertyButton" onClick={(e) => {this.onDeleteClicked(e)}}>x</button>
         }
 
-        //handle buttons showing if not signed in
+        //handle buttons showing only if signed in
         let buttons;
         if(this.state.username) {
-            buttons = <div className='buttons'>
-                <button className='view' onClick={this.onViewClicked}>View</button>
-                <button className='other' onClick={(e) => {this.onOtherClicked(e, this.state.property)}}>{this.state.buttonText}</button>
-            </div>
+            if(this.state.property.owner === "Admin" && this.state.buttonText === "Chat") {
+                buttons = <div className='buttons'>
+                    <button className='view' onClick={this.onViewClicked}>View</button>
+                </div>
+            } else {
+                buttons = <div className='buttons'>
+                    <button className='view' onClick={this.onViewClicked}>View</button>
+                    <button className='other' onClick={(e) => {this.onOtherClicked(e, this.state.property)}}>{this.state.buttonText}</button>
+                </div>
+            }
+            
         }
 
         return(
